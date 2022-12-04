@@ -1,0 +1,102 @@
+:root {
+    --primary-color: #fbc218;
+    --black-color:#000;
+    --text-yellow-color: #fbc218;
+    --white-color:#fff;
+    --text-color:#333;
+    --border-color: #dbdbdb;
+    --header-height: 120px;
+    --sidebar-width: 236px;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Reponsive */
+.grid__row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.grid__column-2 {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 16.6667%;
+}
+
+.grid__column-2-4 {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 20%;
+}
+
+.grid__column-10 {
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 83.3334%;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes growUp {
+    from {
+        opacity: 0;
+        transform: scale(var(--grow-from));
+    }
+    to {
+        opacity: 1;
+        transform: scale(var(--grow-to));
+    }
+}
+
+@keyframes growDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade {
+    from {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+  
+  .dropdown {
+     animation: fade 2s linear forwards;
+  }
+
+
+/* Button style */
+.btn {
+    
+}

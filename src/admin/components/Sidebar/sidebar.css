@@ -1,0 +1,54 @@
+.sidebar-admin {
+    background-color: #171c2b;
+    height: 100vh;
+    color: #9ea4b3;
+}
+
+.company-name {
+    padding: 20px 0;
+}
+
+.company-name-label {
+    text-align: center;
+    color: rgba(251, 194, 24, 0.802);
+}
+
+.function-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0 10px;
+}
+
+.function-menu-btn {
+    height: 50px;
+    /* width: 100px; */
+    transition: ease 0.2s;
+    display: inline-block;
+    cursor: pointer;
+    margin: 2px 0;
+}
+
+.function-menu-btn:hover {
+    color: #171c2b;
+    background-color: #9ea4b3;
+    border-radius: 3px;
+}
+
+.menu-icon,
+.function-menu-label {
+    font-size: 16px;
+}
+
+.menu-icon {
+    margin: 0 10px 0 20px;
+    margin-bottom: -3px;
+}
+.function-menu-label {
+    display: inline-block;
+    text-align: initial;
+    width: 135px;
+    cursor: pointer;
+    line-height: 50px;
+}

@@ -1,0 +1,116 @@
+.editable-row:hover .editable-cell-value-wrap {
+    padding: 4px 11px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+}
+
+[data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+    border: 1px solid #434343;
+}
+.ant-table {
+    line-height: 0.5715;
+    max-height: 400px;
+    min-height: 225px;
+    box-shadow: 0 2px 4px #b8b5b5;
+    padding: 8px;
+    border-radius: 3px;
+}
+
+.wrap-content-admin {
+    position: relative;
+    margin-top: 20px;
+}
+
+.heading-product-type h1 {
+    color: var(--text-color);
+}
+
+.table {
+    width: 630px;
+    margin: 10px auto;
+}
+.btnDel span {
+    color: #ff4d4f;
+}
+.btn-upload {
+    width: 225px;
+    height: 40px;
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.btn-upload span {
+    color: var(--text-color);
+    line-height: 25px;
+    font-size: 15px;
+    position: relative;
+    top: -3px;
+    padding-left: 5px;
+}
+.btn-upload path {
+    color: var(--text-color);
+}
+
+.ant-image {
+    width: 100px !important;
+}
+
+.ant-image-preview-img {
+    height: 500px;
+    object-fit: contain;
+    margin: auto;
+    vertical-align: middle;
+    display: initial;
+}
+
+.form {
+    width: 400px;
+    margin: 20px auto;
+}
+
+.input-label {
+    width: 100%;
+    display: inline-block;
+    text-align: initial;
+    color: var(--text-color);
+    font-size: 14px;
+}
+.input-label.input-label-image {
+    margin-top: 18px;
+}
+.form .form-input {
+    width: 100%;
+    width: 100%;
+    margin: 8px 0;
+    display: inline-block;
+    border-radius: 4px;
+    box-sizing: border-box;
+    line-height: 20px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: initial;
+}
+
+.form-input.select {
+    box-sizing: content-box;
+}
+
+.select-wapper {
+    display: flex;
+}
+
+.ant-select-selection-search-input {
+    color: var(--text-color);
+}
+
+/* .row-bottom {
+    bottom: -75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+} */
+
+.row-bottom col {
+    justify-content: space-between;
+}
