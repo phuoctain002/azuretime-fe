@@ -3,21 +3,24 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactImageMagnify from 'react-image-magnify';
 import { useParams } from 'react-router-dom';
-import { url } from '../../../api/url';
-import { urnDetail } from '../../../api/urn';
+import { url, pathImgResized, pathImgFull } from '../../../api/url';
+import { urnDetailProduct, urnDetailImgs } from '../../../api/urn';
 
 function DetailContent() {
     const { t } = useTranslation();
     const [mainImg, setMainImg] = useState('');
     const { idProduct } = useParams();
+    const [subImgs, setSubImgs] = useState([]);
     const [product, setProduct] = useState({ price: 0 });
-    console.log(product);
     useEffect(() => {
-        axios.get('http://127.0.0.1:3003' + urnDetail(idProduct)).then((res) => {
+        axios.get(url + urnDetailProduct(idProduct)).then((res) => {
             setProduct(res.data);
-            setMainImg(res.data.urlResized[0].urlResized);
+            console.log('ava', res.data.name);
         });
-        console.log('idProduct', idProduct);
+        axios.get(url + urnDetailImgs(idProduct)).then((res) => {
+            setSubImgs(res.data);
+            setMainImg(pathImgResized + res.data[0].name);
+        });
         //getProductDetail
     }, [idProduct]);
     return (
@@ -51,15 +54,15 @@ function DetailContent() {
                             />
                         </div>
                         <div className="sub-images-list">
-                            {product.urlResized &&
-                                product.urlResized.map((item, index) => {
+                            {subImgs &&
+                                subImgs.map((item, index) => {
                                     return (
                                         <>
                                             <div className="sub-images-item">
                                                 <img
-                                                    src={item.urlResized}
+                                                    src={pathImgResized + item.name}
                                                     alt=""
-                                                    onClick={() => setMainImg(item.urlResized)}
+                                                    onClick={() => setMainImg(pathImgResized + item.name)}
                                                 />
                                             </div>
                                         </>

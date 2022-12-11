@@ -7,9 +7,12 @@
 export const urnBrand = '/api/brand/';
 export const urnCate = '/api/cate/';
 export const urnPros = (id) => '/api/pros/products/' + id;
-export const urnDetail = (id) => '/api/pros/detail/' + id;
+export const urnDetailProduct = (id) => '/api/pros/detail/' + id;
 export const urnPost = (id) => '/api/post/' + id;
+export const urnDetailImgs = (id) => '/api/image/detail/' + id;
 
 // admin
-export const urnAddProduct = '/api/product/';
-export const urnImageByProductId = '/api/imageByProductId/';
+export const urnAddProduct = '/api/pros/';
+export const urnAddImages = '/api/image/';
+export const urnUploadImagesFull = (time) => '/api/image/upload-full/' + time;
+export const urnUploadImagesResized = (time) => '/api/image/upload-resized/' + time;

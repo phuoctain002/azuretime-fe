@@ -21,7 +21,14 @@ import { AiOutlineUpload } from 'react-icons/ai';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { url } from '../../../../api/url';
-import { urnImageByProductId, urnAddProduct, urnBrand, urnCate } from '../../../../api/urn';
+import {
+    urnAddImages,
+    urnAddProduct,
+    urnBrand,
+    urnCate,
+    urnUploadImagesResized,
+    urnUploadImagesFull,
+} from '../../../../api/urn';
 import Resizer from 'react-image-file-resizer';
 
 function Products() {
@@ -38,6 +45,9 @@ function Products() {
     const [upStatus, setUpStatus] = useState(true);
     const [avaId, setAvaId] = useState(null);
     const [productImgs, setProductImgs] = useState([]);
+    const [imgsSubmit, setImgsSubmit] = useState([]);
+    const [filesFull, setFilesFull] = useState([]);
+    const [filesResized, setFilesResized] = useState([]);
 
     // SP: PRODUCT
     const [descriptionEn, setDescriptionEn] = useState('');
@@ -45,14 +55,13 @@ function Products() {
     const [cates, setCates] = useState([]);
     const [catesByBrand, setCatesByBrand] = useState([]);
     const [product, setProduct] = useState({
-        name: '',
+        code: '',
+        nameProduct: '',
         descriptionVi: '',
         descriptionEn: '',
         price: 1,
-        productTypeId: 0,
-        special: '',
-        status: 1,
-        percentDiscount: 0,
+        urlVideo: '',
+        gender: true,
     });
     const [visibleDiscount, setVisibleDiscount] = useState(false);
 
@@ -81,7 +90,7 @@ function Products() {
     };
 
     const handleResize = (size, quality, file) => {
-        new Promise((resolve) => {
+        return new Promise((resolve) => {
             Resizer.imageFileResizer(
                 file,
                 size,
@@ -92,7 +101,7 @@ function Products() {
                 (uri) => {
                     resolve(uri);
                 },
-                'base64',
+                'file',
             );
         });
     };
@@ -136,8 +145,10 @@ function Products() {
     };
     // handelDelete image
     const handleDelete = (key) => {
-        // const newData = dataSubmitImgFir.filter((item) => item.key !== key);
-        // setDataSubmitImgFir(newData);
+        setFilesFull(filesFull.filter((item) => item.uid !== key));
+        setFilesResized(filesResized.filter((item) => item.uid !== key));
+        setImgsSubmit(imgsSubmit.filter((item) => item.uid !== key));
+        setProductImgs(productImgs.filter((item) => item.key !== key));
     };
     const columns = [
         {
@@ -184,6 +195,11 @@ function Products() {
 
     const handleClickRadio = (selectedRows) => {
         setAvaId(selectedRows[0].file.uid);
+        setImgsSubmit(
+            imgsSubmit.map((item) => {
+                return { ...item, isAvatar: item.uid === selectedRows[0].file.uid };
+            }),
+        );
         console.log('selectedRows: ', selectedRows[0].file.uid);
     };
     //#endregion
@@ -206,11 +222,11 @@ function Products() {
     };
 
     const isValidator = () => {
-        const { name, description, productTypeId } = product;
-        if (name === '' || description === '' || productTypeId === 0) {
-            notification.warning({ message: `Vui lòng nhập các ô có dấu (*)`, duration: 4 });
-            return false;
-        }
+        // const { name, description } = product;
+        // if (name === '' || description === '' ) {
+        //     notification.warning({ message: `Vui lòng nhập các ô có dấu (*)`, duration: 4 });
+        //     return false;
+        // }
         return true;
     };
 
@@ -235,13 +251,8 @@ function Products() {
         //     storage.refFromURL(item).delete();
         // });
     };
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (isValidator()) {
-            let imageFail = [];
-            let imgsSubmit = [];
-            let resultSuccess = 0;
-            let resultFail = 0;
-
             if (productImgs.length > 0) {
                 if (avaId === null) {
                     notification.warning({
@@ -249,29 +260,46 @@ function Products() {
                         duration: 10,
                     });
                 } else {
-                    await axios
+                    axios
                         .post(url + urnAddProduct, product)
                         .then((res) => {
                             if (res.data) {
-                                const productId = res.data;
-
-                                productImgs.map(async (item, index) => {
-                                    var name = Date.now() + '_' + item.file.name;
-
-                                    // Resize to 400px, get base64
-                                    const image400 = await handleResize(400, 100, item.file);
-                                    imgsSubmit.push({
-                                        name: name,
-                                        urlResized: image400,
-                                        urlFull: item.urlFull,
-                                        isAvatar: item.file.uid === avaId,
-                                        productId,
-                                    });
+                                const time = Date.now();
+                                axios.post(url + urnAddImages, {
+                                    idProduct: res.data,
+                                    imgsSubmit: imgsSubmit.map((item) => {
+                                        return { ...item, name: time + '_' + item.name };
+                                    }),
                                 });
-                                // axios.post(url + urnAddImages, imgsSubmit);
+                                axios.post(
+                                    url + urnUploadImagesFull(time),
+                                    { files: filesFull },
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data',
+                                        },
+                                    },
+                                );
+                                axios.post(
+                                    url + urnUploadImagesResized(time),
+                                    { files: filesResized },
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data',
+                                        },
+                                    },
+                                );
                             }
+                            // notification.success({
+                            //     message: `Thành công`,
+                            //     duration: 3,
+                            // });
                         })
                         .catch((err) => {
+                            notification.error({
+                                message: `Lỗi`,
+                                duration: 3,
+                            });
                             throw err;
                         });
                 }
@@ -379,8 +407,8 @@ function Products() {
                                 rows={20}
                                 placeholder="-- Mô tả sản phẩm bằng tiếng Anh"
                                 value={product.descriptionEn}
-                                // onChange={(e) => setProduct({ ...product, descriptionEn: e.target.value })}
-                                onBlur={(e) => setProduct({ ...product, descriptionEn: e.target.value })}
+                                onChange={(e) => setProduct({ ...product, descriptionEn: e.target.value })}
+                                // onBlur={(e) => setProduct({ ...product, descriptionEn: e.target.value })}
                             />
                         )}
                         <Button type="primary" onClick={handleTranslate}>
@@ -411,13 +439,7 @@ function Products() {
                             placeholder="-- Mô tả sản phẩm bằng tiếng Anh"
                             value={descriptionEn}
                         /> */}
-                        <label className="input-label">Điểm nổi bật</label>
-                        <Input
-                            type="text"
-                            className="form-input"
-                            placeholder="-- Điểm nổi bật (nếu có)"
-                            onBlur={(e) => setProduct({ ...product, special: e.target.value })}
-                        />
+
                         <label className="input-label">
                             Giá <span style={{ color: 'red' }}>*</span>
                         </label>
@@ -433,7 +455,7 @@ function Products() {
                                 setVisibleDiscount(e.target.value !== 0);
                             }}
                         />
-                        {visibleDiscount ? (
+                        {/* {visibleDiscount ? (
                             <Row>
                                 <Col span={4}>Discount {product.percentDiscount}%</Col>
                                 <Col span={20}>
@@ -451,7 +473,7 @@ function Products() {
                             </Row>
                         ) : (
                             <div style={{ height: '36px' }}></div>
-                        )}
+                        )} */}
                     </div>
                 </Col>
                 <Col span={12}>
@@ -509,11 +531,26 @@ function Products() {
                             // }
                             return typeImg.includes(file.type) ? true : Upload.LIST_IGNORE;
                         }}
-                        onChange={(info) => {
+                        onChange={async (info) => {
                             // Up false thì không setData
                             if (upStatus) {
                                 if (info.file.percent === 100) {
+                                    setFilesFull((oldData) => [...oldData, info.file.originFileObj]);
+                                    var resized = await handleResize(400, 100, info.file.originFileObj);
+                                    setFilesResized((oldData) => [...oldData, resized]);
+                                    //  // Resize to 400px, get base64
+                                    // const image400 = await handleResize(400, 100, info.file.originFileObj);
+
+                                    setImgsSubmit((prev) => [
+                                        ...prev,
+                                        {
+                                            uid: info.file.uid,
+                                            name: info.file.originFileObj.name,
+                                            isAvatar: false,
+                                        },
+                                    ]);
                                     getBase64(info.file.originFileObj, (url) => {
+                                        // Show table
                                         setProductImgs((oldData) => [
                                             ...oldData,
                                             { key: info.file.uid, url, file: info.file.originFileObj },
