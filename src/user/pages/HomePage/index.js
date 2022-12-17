@@ -10,17 +10,7 @@ function HomePage() {
         localStorage.setItem('onClickCateId', JSON.stringify(-1));
         localStorage.setItem('cates', JSON.stringify([]));
     }, []);
-    return (
-        <>
-            <Header />
-            <div className="body">
-                <Sidebar />
-                <div className="right-content">
-                    <DefaultContent />
-                </div>
-            </div>
-        </>
-    );
+    return <DefaultContent />;
 }
 
 export default HomePage;

@@ -1,12 +1,15 @@
 @import 'antd/dist/reset.css';
 /* @import 'antd/dist/antd.css'; */
-
-* {
+.app-client * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: Tahoma, Arial, sans-serif;
     color: #fff;
+}
+
+.body-client {
+    display: flex;
 }
 
 ul {

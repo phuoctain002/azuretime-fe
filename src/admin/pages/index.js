@@ -6,17 +6,17 @@ import SidebarAdmin from '../components/Sidebar';
 import { Col, Row } from 'antd';
 import React from 'react';
 import './admin.css';
-import Products from '../components/Content/Products';
+import Products from '../components/Content/Products/index';
 
 function Admin() {
     return (
-        <div className='app-admin'>
+        <div className="app-admin">
             {/* <HeaderAdmin /> */}
             <Row>
                 <Col span={4}>
-                    <SidebarAdmin />
+                    <SidebarAdmin className='sidebar-admin' />
                 </Col>
-                <Col span={18}>
+                <Col span={20}>
                     {/* <ProductTypes /> */}
                     <Products />
                 </Col>

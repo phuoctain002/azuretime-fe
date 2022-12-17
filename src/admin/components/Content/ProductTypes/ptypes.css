@@ -1,0 +1,8 @@
+.heading-product-type {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.heading-product-type h1 {
+    color: var(--text-color);
+}

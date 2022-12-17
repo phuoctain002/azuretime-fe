@@ -4,15 +4,7 @@ import Sidebar from '../../components/Sidebar';
 
 function PostsPage() {
     return (
-        <>
-            <Header />
-            <div className="body">
-                <Sidebar />
-                <div className="right-content">
-                    <Posts />
-                </div>
-            </div>
-        </>
+        <Posts />
     );
 }
 

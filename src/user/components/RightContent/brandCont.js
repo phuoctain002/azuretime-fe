@@ -2,7 +2,7 @@ import { Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { url, pathImgResized } from '../../../api/url';
+import { url, path } from '../../../api/url';
 import { urnPros } from '../../../api/urn';
 function Products(props) {
     const [pros, setPros] = useState([]);
@@ -30,7 +30,7 @@ function Products(props) {
                                         <div className="card-wrap-brand">
                                             <Link to={'/detail/' + item.idProduct}>
                                                 <div className="card-image">
-                                                    <img src={pathImgResized+item.name} alt={item.name} />
+                                                    <img src={path + item.name} alt={item.name} />
                                                 </div>
                                                 <h2 className="card-name">{item.code}</h2>
                                             </Link>

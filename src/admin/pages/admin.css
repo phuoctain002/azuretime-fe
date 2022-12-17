@@ -1,3 +1,17 @@
-.app-admin {
+.app-admin * {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.app-admin .wrap-content-admin {
+    min-height: 100vh;
     background-color: white;
+}
+.app-admin {
+    position: relative;
+}
+.sidebar-admin {
+    position: fixed;
+    right: 0;
+    left: 0;
+    width: 226px;
 }

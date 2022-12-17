@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactImageMagnify from 'react-image-magnify';
 import { useParams } from 'react-router-dom';
-import { url, pathImgResized, pathImgFull } from '../../../api/url';
+import { url, path } from '../../../api/url';
 import { urnDetailProduct, urnDetailImgs } from '../../../api/urn';
 
 function DetailContent() {
@@ -19,7 +19,7 @@ function DetailContent() {
         });
         axios.get(url + urnDetailImgs(idProduct)).then((res) => {
             setSubImgs(res.data);
-            setMainImg(pathImgResized + res.data[0].name);
+            setMainImg(path + res.data[0].name);
         });
         //getProductDetail
     }, [idProduct]);
@@ -60,9 +60,9 @@ function DetailContent() {
                                         <>
                                             <div className="sub-images-item">
                                                 <img
-                                                    src={pathImgResized + item.name}
+                                                    src={path + item.name}
                                                     alt=""
-                                                    onClick={() => setMainImg(pathImgResized + item.name)}
+                                                    onClick={() => setMainImg(path + item.name)}
                                                 />
                                             </div>
                                         </>

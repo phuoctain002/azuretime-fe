@@ -1,8 +1,8 @@
-import { Col, Row } from 'antd';
+import { Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { url, pathImgResized } from '../../../api/url';
+import { url, path } from '../../../api/url';
 import { urnPros } from '../../../api/urn';
 function CategoryContent() {
     const paramsIdCate = Number(useParams().idCate);
@@ -11,18 +11,14 @@ function CategoryContent() {
     const [Cate, setCate] = useState({});
     const [Gender, setGender] = useState({});
     useEffect(() => {
-        // console.log('paramsIdCate, paramsGender', paramsIdCate, paramsGender.typeOf);
         setCate(JSON.parse(localStorage.getItem('onClickCate')));
         setGender(JSON.parse(localStorage.getItem('onClickGender')));
-        // console.log('param', Gender);
         axios.get(url + urnPros(JSON.parse(localStorage.getItem('onClickCate')).idCategory)).then((res) => {
-            // console.log(res.data);
             if (paramsGender === 0) {
                 setPros(res.data);
             } else if (paramsGender > 0) {
                 setPros(res.data.filter((x) => x.gender === paramsGender));
             }
-            // console.log('pros', pros);
         });
     }, [/** Cus change url so reload component */ paramsIdCate, paramsGender]);
 
@@ -48,7 +44,7 @@ function CategoryContent() {
                                         <div className="card-wrap-category">
                                             <Link to={'/detail/' + item.idProduct}>
                                                 <div className="card-image">
-                                                    <img src={pathImgResized + item.name} alt="" />
+                                                    <img src={path + item.name} alt="" />
                                                 </div>
                                             </Link>
                                             <div className="card-info-category">

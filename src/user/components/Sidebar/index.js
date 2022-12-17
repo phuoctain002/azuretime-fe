@@ -4,6 +4,7 @@ import axios from 'axios';
 import { url } from '../../../api/url';
 import { urnBrand, urnCate } from '../../../api/urn';
 import { useTranslation } from 'react-i18next';
+import '../../../App.css';
 
 function Gender(props) {
     const gender = [1, 2];
