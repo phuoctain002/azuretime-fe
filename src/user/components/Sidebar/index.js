@@ -195,7 +195,7 @@ function Sidebar(props) {
 
                 <hr className="hrSidebar" />
 
-                <div className="online">
+                {/* <div className="online">
                     <div>
                         <h3 className="whoonline">WHO'S ONLINE</h3>
                     </div>
@@ -208,7 +208,7 @@ function Sidebar(props) {
                         <h3 className="counter-heading">VISITORS COUNTER</h3>
                         <div className="powr-hit-counter" id="a1c9800e_1667897893"></div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="chrono24-logo">
                     <a href="https://www.chrono24.com" target="_blank" rel="noreferrer">

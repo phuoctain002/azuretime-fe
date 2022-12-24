@@ -6,7 +6,6 @@ import Product from '../../components/Content/Products/index';
 function AdminProduct() {
     return (
         <Product />
-        
     );
 }
 

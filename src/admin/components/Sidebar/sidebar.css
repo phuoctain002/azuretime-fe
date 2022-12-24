@@ -1,14 +1,19 @@
 .sidebar-admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #171c2b;
     height: 100vh;
     color: #9ea4b3;
 }
 
 .company-name {
-    padding: 20px 0;
+    padding: 20px 10px 20px 0;
+    width: 100%;
 }
 
 .company-name-label {
+    cursor: pointer;
     text-align: center;
     color: rgba(251, 194, 24, 0.802);
 }
@@ -18,7 +23,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: baseline;
-    margin: 0 10px;
+    margin-left: 10px;
 }
 
 .function-menu-btn {
@@ -52,4 +57,36 @@
     width: 135px;
     cursor: pointer;
     line-height: 50px;
+}
+
+.account-bottom {
+    display: flex;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-top: 1px solid #3a3232;
+}
+
+.account-name {
+    color: cyan;
+}
+
+.account-icon {
+    margin: 0 10px 0 20px;
+    margin-bottom: -3px;
+    font-size: 20px;
+    line-height: 40px;
+}
+.account-icon-logout {
+    margin-bottom: -4px;
+    font-size: 20px;
+    line-height: 44px;
+    margin-left: 30px;
+    padding-left: 10px;
+    border-left: 1px solid #3a3232;
+    transition: ease-in 0.1s;
+}
+.account-icon-logout:hover {
+    color: red;
 }

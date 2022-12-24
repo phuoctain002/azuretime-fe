@@ -1,8 +1,7 @@
 import CategoryContent from '../../components/RightContent/cateCont';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
 
 function CategoryPage() {
+    document.title = 'Azuretime';
     return <CategoryContent />;
 }
 

@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
-import { Form, Input, InputNumber, Popconfirm, Table, Typography, Row, Col, Button, notification, Space } from 'antd';
+import {
+    Form,
+    Input,
+    InputNumber,
+    Popconfirm,
+    Table,
+    Typography,
+    Row,
+    Col,
+    Button,
+    notification,
+    Space,
+    Tooltip,
+} from 'antd';
 import './ptypes.css';
 import '../../../../App.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { url } from '../../../../api/url';
 import { urnBrand, urnCate, urnDeleteBrand, urnDeleteCate } from '../../../../api/urn';
+import { Link } from 'react-router-dom';
 
 function ProductTypes() {
+    document.title = 'Admin - Thương hiệu - Loại';
     const [api, contextHolder] = notification.useNotification();
     const [brands, setBrands] = useState([]); //Danh sách hiển thị table brand
     const [cates, setCates] = useState([]); //Danh sách chưa lọc
     const [catesByBrand, setCatesByBrand] = useState([]); //Danh sách hiển thị table cate
+    const [loadingBrand, setLoadingBrand] = useState(true); //show loading
+    const [loadingCate, setLoadingCate] = useState(); //show loading
 
     //#region --Brand--
     // Form Brand
@@ -25,24 +42,31 @@ function ProductTypes() {
     const [isHidden, setIsHidden] = useState(true);
 
     const handleAddBrand = async () => {
-        await axios
-            .post(url + urnBrand, brand)
-            .then(notification.success({ message: `Lưu thành công!`, duration: 4 }))
-            .catch((err) => {
-                console.log(err);
-                notification.error({ message: `Lưu thất bại, vui lòng liên hệ quản trị viên!`, duration: 4 });
-            });
-
-        await axios.get(url + urnBrand).then((res) => {
-            setBrands(res.data);
-            setBrand({ nameBrand: '' });
-        });
+        if (brand.nameBrand !== '') {
+            await axios
+                .post(url + urnBrand, brand)
+                .then((insertId) => {
+                    do {
+                        if (insertId)
+                            axios.get(url + urnBrand).then((res) => {
+                                setBrands(res.data);
+                                setBrand({ nameBrand: '' });
+                            });
+                    } while (!insertId);
+                    notification.success({ message: `Lưu thành công!`, duration: 2 });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    notification.error({ message: `Lưu thất bại, vui lòng liên hệ quản trị viên!`, duration: 4 });
+                });
+        }
     };
     const handleDeleteBrand = (brand) => {
         axios.delete(url + urnDeleteBrand(brand.idBrand)).then((res) => {
             setBrands(brands.filter((x) => x.idBrand !== brand.idBrand));
             if (brand.idBrand === cate.idBrand) {
                 setCatesByBrand([]);
+                setCate({ ...cate, idBrand: -1 });
             }
         });
     };
@@ -73,17 +97,20 @@ function ProductTypes() {
         if (cate.idBrand) {
             await axios
                 .post(url + urnCate, cate)
-                .then(notification.success({ message: `Lưu thành công!`, duration: 4 }))
+                .then((insertId) => {
+                    do {
+                        axios.get(url + urnCate).then((res) => {
+                            setCates(res.data);
+                            setCatesByBrand(res.data.filter((x) => x.idBrand === cate.idBrand));
+                            setCate({ nameBrand: '', idBrand: cate.idBrand });
+                        });
+                    } while (!insertId);
+                    notification.success({ message: `Lưu thành công!`, duration: 2 });
+                })
                 .catch((err) => {
                     console.log(err);
                     notification.error({ message: `Lưu thất bại, vui lòng liên hệ quản trị viên!`, duration: 4 });
                 });
-
-            await axios.get(url + urnCate).then((res) => {
-                setCates(res.data);
-                setCatesByBrand(res.data.filter((x) => x.idBrand === cate.idBrand));
-                setCate({ nameBrand: '', idBrand: cate.idBrand });
-            });
         } else {
             notification.success({ message: `Hãy chọn thương hiệu muốn thêm loại sản phẩm!`, duration: 4 });
         }
@@ -96,6 +123,7 @@ function ProductTypes() {
             setCatesByBrand(result.filter((x) => x.idBrand === cate.idBrand));
         });
     };
+    const handleAddProduct = () => {};
 
     const editBrand = (record) => {
         formBrand.setFieldsValue({
@@ -114,15 +142,17 @@ function ProductTypes() {
             const indexBrand = newDataBrand.findIndex((item) => idBrand === item.idBrand);
             if (indexBrand > -1) {
                 const itemBrand = newDataBrand[indexBrand];
-                newDataBrand.splice(indexBrand, 1, {
+                const itemUpdate = {
                     ...itemBrand,
                     ...rowBrand,
-                });
+                };
+                console.log(brand, indexBrand, newDataBrand[indexBrand], rowBrand, itemUpdate);
+                newDataBrand.splice(indexBrand, 1, itemUpdate);
 
                 let item = { idBrand, nameBrand: rowBrand.nameBrand };
                 await axios.put(url + urnBrand, item).then((res) => {
                     notification.success({ message: `Lưu thành công!`, duration: 4 });
-                    newDataBrand.push(rowBrand);
+                    // newDataBrand.push(rowBrand);
                     setBrands(newDataBrand);
                     setEditingKeyBrand('');
                 });
@@ -170,13 +200,14 @@ function ProductTypes() {
                             onClick={() => saveBrand(record.idBrand)}
                             style={{
                                 marginRight: 15,
+                                fontWeight: 'bold',
                             }}
                         >
                             Lưu
                         </Typography.Link>
 
                         <div onClick={cancelBrand}>
-                            <a>Hủy</a>
+                            <a style={{ fontWeight: 'bold' }}>Hủy</a>
                         </div>
                     </span>
                 ) : (
@@ -185,6 +216,7 @@ function ProductTypes() {
                             onClick={() => rowSelection(record)}
                             style={{
                                 marginRight: 15,
+                                fontWeight: 'bold',
                             }}
                         >
                             <a>Xem</a>
@@ -194,13 +226,14 @@ function ProductTypes() {
                             onClick={() => editBrand(record)}
                             style={{
                                 marginRight: 15,
+                                fontWeight: 'bold',
                             }}
                         >
                             Sửa
                         </Typography.Link>
                         {contextHolder}
                         <div onClick={() => confirmDelete(record)}>
-                            <a style={{ color: 'red' }}>Xóa</a>
+                            <a style={{ color: 'red', fontWeight: 'bold' }}>Xóa</a>
                         </div>
                     </span>
                 );
@@ -250,9 +283,11 @@ function ProductTypes() {
     };
 
     const rowSelection = (item) => {
+        setLoadingCate(true);
         setCatesByBrand(cates.filter((x) => x.idBrand === item.idBrand));
         setCate({ ...cate, idBrand: item.idBrand });
         setIsHidden(true);
+        setLoadingCate(false);
     };
     //#endregion
 
@@ -311,7 +346,7 @@ function ProductTypes() {
     const columnsCate = [
         {
             title: 'STT',
-            width: '5%',
+            width: '4%',
             editable: false,
             key: 'index',
             dataIndex: 'index=1',
@@ -323,19 +358,19 @@ function ProductTypes() {
         {
             title: 'Tên loại sản phẩm',
             dataIndex: 'nameCategory',
-            width: '35%',
+            width: '34%',
             editable: true,
         },
         {
             title: 'Thương hiệu',
             dataIndex: 'nameBrand',
-            width: '35%',
+            width: '34%',
             editable: false,
         },
         {
             title: 'Chức năng',
             dataIndex: 'operation',
-            width: '25%',
+            width: '28%',
             render: (_, record) => {
                 const editableCate = isEditingCate(record);
                 return editableCate ? (
@@ -344,28 +379,41 @@ function ProductTypes() {
                             onClick={() => saveCate(record.idCategory)}
                             style={{
                                 marginRight: 15,
+                                fontWeight: 'bold',
                             }}
                         >
                             Lưu
                         </Typography.Link>
 
                         <div onClick={cancelCate}>
-                            <a>Hủy</a>
+                            <a style={{ fontWeight: 'bold' }}>Hủy</a>
                         </div>
                     </span>
                 ) : (
                     <span style={{ display: 'flex' }}>
+                        <div onClick={() => handleAddProduct(record)}>
+                            <Tooltip placement="topLeft" title="Thêm sản phẩm">
+                                <Link
+                                    to={'/admin/create-product/' + record.idBrand + '/' + record.idCategory}
+                                    style={{ color: '#1677ff', marginRight: 10, fontWeight: 'bold' }}
+                                >
+                                    Thêm
+                                </Link>
+                            </Tooltip>
+                        </div>
                         <Typography.Link
                             disabled={editingKeyCate !== ''}
                             onClick={() => editCate(record)}
                             style={{
-                                marginRight: 15,
+                                marginRight: 10,
+                                fontWeight: 'bold',
                             }}
                         >
                             Sửa
                         </Typography.Link>
+
                         <div onClick={() => handleDeleteCate(record)}>
-                            <a style={{ color: 'red' }}>Xóa</a>
+                            <a style={{ color: 'red', fontWeight: 'bold' }}>Xóa</a>
                         </div>
                     </span>
                 );
@@ -418,6 +466,7 @@ function ProductTypes() {
     useEffect(() => {
         axios.get(url + urnBrand).then((res) => {
             setBrands(res.data);
+            setLoadingBrand(false);
         });
         axios.get(url + urnCate).then((res) => {
             setCates(res.data);
@@ -451,6 +500,7 @@ function ProductTypes() {
                         <div className="form-product-type">
                             <Form form={formBrand} component={false}>
                                 <Table
+                                    loading={loadingBrand}
                                     components={{
                                         body: {
                                             cell: EditableCellBrand,
@@ -503,6 +553,7 @@ function ProductTypes() {
                         <div className="form-product-type">
                             <Form form={formCate} component={false}>
                                 <Table
+                                    loading={loadingCate}
                                     components={{
                                         body: {
                                             cell: EditableCellCate,

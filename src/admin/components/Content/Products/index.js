@@ -1,6 +1,6 @@
 import React from 'react';
-import { Space, Table, Tag, Col, Row, Form, Button, Select, Popconfirm, Input } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { Space, Table, Tag, Col, Row, Form, Button, Select, Popconfirm, Input, Icon } from 'antd';
+import { CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import { url } from '../../../../api/url';
 import { urnProsAdmin, urnBrand, urnCate, urnDeleteProduct, urnGetImgsName } from '../../../../api/urn';
 import './product.css';
@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Product() {
+    document.title = 'Admin - Sản phẩm';
     const [products, setProducts] = useState([]); //Danh sách hiển thị theo filter
     const [productsAll, setProductsAll] = useState([]); //Danh sách tất cả products
     const [page, setPage] = useState(1);
@@ -17,6 +18,7 @@ function Product() {
     const [cates, setCates] = useState([]); //Danh sách chưa lọc
     const [catesByBrand, setCatesByBrand] = useState([]); //Danh sách hiển thị select
     const [selectedCate, setSelectedCate] = useState(); //Danh sách hiển thị select
+    const [loading, setLoading] = useState(true); //show loading
 
     const EditableContext = React.createContext(null);
     const EditableRow = ({ index, ...props }) => {
@@ -70,7 +72,7 @@ function Product() {
             dataIndex: 'gender',
             width: '82px',
             key: 'gender',
-            render: (gender) => <>{gender === 0 ? 'Nữ' : gender === 1 ? 'Nam' : 'unisex'}</>,
+            render: (gender) => <>{gender === 0 ? 'Nữ' : gender === 1 ? 'Nam' : 'Unisex'}</>,
         },
         {
             title: 'Thương hiệu',
@@ -102,6 +104,7 @@ function Product() {
         axios.get(url + urnProsAdmin).then((res) => {
             setProductsAll(res.data);
             setProducts(res.data);
+            setLoading(false);
         });
         axios.get(url + urnBrand).then((res) => {
             setBrands(res.data);
@@ -201,6 +204,7 @@ function Product() {
                 <Col span={24}>
                     <div className="table-products">
                         <Table
+                            loading={loading}
                             components={components}
                             rowClassName={(record, index) =>
                                 index % 2 === 0 ? 'table-row-light editable-row' : 'table-row-dark editable-row'

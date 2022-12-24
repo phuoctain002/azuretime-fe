@@ -1,0 +1,26 @@
+/* Mobile & Tablet */
+@media (max-width: 1023px) {
+    .hide-on-mobile-tablet {
+        display: none;
+    }
+
+    /* MAIN MENU ON MOBILE */
+    .header__mobile-main-menu {
+        display: block;
+    }
+
+    /* MOBILE CATEGORY */
+    .mobile__category {
+        display: block;
+    }
+}
+/* Tablet */
+@media (min-width: 740px) and (max-width: 1023px) {
+}
+
+/* Mobile */
+@media (max-width: 739px) {
+    .hide-on-mobile {
+        display: none;
+    }
+}

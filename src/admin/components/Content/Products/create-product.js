@@ -14,9 +14,10 @@ import {
     urnUploadImagesFull,
 } from '../../../../api/urn';
 import Resizer from 'react-image-file-resizer';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function CreateProduct() {
+    document.title = 'Admin - Thêm sản phẩm';
     const { TextArea } = Input;
 
     // SP: Save IMG PRODUCT
@@ -29,6 +30,7 @@ function CreateProduct() {
     const [filesResized, setFilesResized] = useState([]);
 
     // SP: PRODUCT
+    const { idBrand, idCategory } = useParams();
     const [brands, setBrands] = useState([]); //Danh sách hiển thị select
     const [cates, setCates] = useState([]); //Danh sách chưa lọc
     const [catesByBrand, setCatesByBrand] = useState([]); //Danh sách hiển thị select
@@ -61,6 +63,11 @@ function CreateProduct() {
         });
         axios.get(url + urnCate).then((res) => {
             setCates(res.data);
+            if (idBrand && idCategory) {
+                setSelectedBrand(Number(idBrand));
+                setCatesByBrand(res.data.filter((x) => x.idBrand === Number(idBrand)));
+                setSelectedCate(Number(idCategory));
+            }
         });
     }, []);
 
@@ -70,6 +77,7 @@ function CreateProduct() {
         let a = cates.filter((x) => x.idBrand === value);
         setCatesByBrand(a);
         setSelectedBrand(value);
+        setSelectedCate();
     };
     const handleSelectCate = (value) => {
         setProduct({ ...product, idCategory: value });
@@ -106,7 +114,7 @@ function CreateProduct() {
             url: 'https://ai-translate.p.rapidapi.com/translate',
             headers: {
                 'Content-Type': 'application/json',
-                'X-RapidAPI-Key': '6c64d6bdfemshc1cb857b2c595a1p19d80bjsn704140f2e92b',
+                'X-RapidAPI-Key': '4ac5dc1462msh54b5291a85bb08dp13d741jsn956c8de38d96',
                 'X-RapidAPI-Host': 'ai-translate.p.rapidapi.com',
             },
             data: { texts: [text], tl: 'en', sl: 'vi' },
@@ -369,14 +377,14 @@ function CreateProduct() {
                         <label className="input-label">Giá</label>
                         <InputNumber
                             className="form-input"
-                            min={1}
+                            min={0}
                             max={1000000000}
                             type="number"
                             value={product.price}
                             // defaultValue={0}
                             placeholder="-- Nhập giá sản phẩm"
                             onChange={(e) => {
-                                setProduct({ ...product, price: e.target.value });
+                                setProduct({ ...product, price: Number(e.target.value) });
                                 // setVisibleDiscount(e.target.value !== 0);
                             }}
                         />
@@ -456,7 +464,7 @@ function CreateProduct() {
                         <label className="input-label">Giới tính</label>
                         <Radio.Group
                             className="radio-group"
-                            value={2}
+                            value={product.gender}
                             onChange={(e) => {
                                 console.log('radio checked', e.target.value);
                                 setProduct({ ...product, gender: e.target.value });
@@ -552,19 +560,13 @@ function CreateProduct() {
                                     } else if (typeImg.includes(file.type)) {
                                         setUpStatus(true);
                                     }
-                                    //CHƯA SỬA
-                                    // if (dataSubmitImgFir.length === 6) {
-                                    //     notification.error({
-                                    //         message: `Chỉ chọn tối đa 6 hình`,
-                                    //         duration: 5,
-                                    //     });
-                                    // }
                                     return typeImg.includes(file.type) ? true : Upload.LIST_IGNORE;
                                 }}
                                 onChange={async (info) => {
+                                    console.log('upload', info);
                                     // Up false thì không setData
                                     if (upStatus) {
-                                        if (info.file.percent === 100) {
+                                        if (info.file.status === 'done' && info.file.percent === 100) {
                                             var fileName = info.file.originFileObj.name.split('.');
                                             setFilesFull((oldData) => [...oldData, info.file.originFileObj]);
                                             var resized = await handleResize(
@@ -580,6 +582,7 @@ function CreateProduct() {
                                             setImgsSubmit((prev) => [
                                                 ...prev,
                                                 {
+                                                    idImg: info.file.uid,
                                                     uid: info.file.uid,
                                                     name: info.file.originFileObj.name,
                                                     isAvatar: false,
@@ -587,10 +590,14 @@ function CreateProduct() {
                                             ]);
                                             getBase64(info.file.originFileObj, (url) => {
                                                 // Show table
-                                                setProductImgs((oldData) => [
-                                                    ...oldData,
-                                                    { key: info.file.uid, url, file: info.file.originFileObj },
-                                                ]);
+                                                if (productImgs.some((element) => element.key === info.file.uid)) {
+                                                    console.log('Có hình này rồi');
+                                                } else {
+                                                    setProductImgs((oldData) => [
+                                                        ...oldData,
+                                                        { key: info.file.uid, url, file: info.file.originFileObj },
+                                                    ]);
+                                                }
                                             });
                                         }
                                     }
@@ -612,8 +619,7 @@ function CreateProduct() {
                                 rowClassName={() => 'editable-row'}
                                 rowSelection={{
                                     type: 'radio',
-                                    onChange: (selectedRowKeys, selectedRows, e) =>
-                                        handleClickRadio(selectedRows),
+                                    onChange: (selectedRowKeys, selectedRows, e) => handleClickRadio(selectedRows),
                                 }}
                                 bordered
                                 columns={columns}

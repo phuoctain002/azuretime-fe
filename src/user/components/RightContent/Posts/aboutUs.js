@@ -7,7 +7,7 @@ function AboutUs() {
 
     With the of operating guideline of making high quality products and the professional serving style, Azuretime have gained more and more credit of domestic and international customer
    
-    To meet up with the need of the customer in fashion and sport... Azuretime have accompanied with the Swissland's brands of high class clock and watch, the place where the most professional clock makers in the world came from. From the Classical style clocks of Maurice Lacroixâ€¦,which are not only elegant but also luxury, to the energetic or professional sporting watch of Glycin, West Endâ€¦ They all can meet the diverse need of customers.
+    To meet up with the need of the customer in fashion and sport... Azuretime have accompanied with the Swissland's brands of high class clock and watch, the place where the most professional clock makers in the world came from. From the Classical style clocks of Maurice Lacroix, which are not only elegant but also luxury, to the energetic or professional sporting watch of Glycin, West End. They all can meet the diverse need of customers.
    
     We will be very please to serve you at Minh Quy Showroom located at 103 Dong Khoi District 1 Ho Chi Minh City.
    
@@ -33,9 +33,11 @@ function AboutUs() {
         { idVideo: 5, urlVideo: 'https://www.youtube.com/embed/liZrcCC7FAw' },
     ];
     return (
-        <div className='post-wrapper'>
-            <div className="heading-top">
-                <span>{post.title}</span>
+        <div className="post-wrapper">
+            <div className="heading">
+                <div className="heading-label">
+                    <label>{post.title}</label>
+                </div>
             </div>
             <p className="post-desciption">{post.description}</p>
             <div className="post-image">

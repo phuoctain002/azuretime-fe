@@ -1,8 +1,7 @@
 import BrandContent from '../../components/RightContent/brandCont';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
 
 function BrandPage() {
+    document.title = 'Azuretime';
     return <BrandContent />;
 }
 

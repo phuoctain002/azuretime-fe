@@ -41,7 +41,8 @@ ul {
 }
 
 .btnLang {
-    margin-right: 5px;
+    cursor: pointer;
+    margin-right: 15px;
 }
 
 .navbar {
