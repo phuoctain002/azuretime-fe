@@ -87,17 +87,15 @@ function DefaultContent() {
                             alt="davidoff"
                         />
                     </div>
-                    <Link to={'/brand/1'}>
-                        <div className="wrap-img-home">
-                            <img
-                                className="img-home"
-                                src={
-                                    'https://firebasestorage.googleapis.com/v0/b/watches-395b6.appspot.com/o/mouricelacroix.png?alt=media&token=48af3996-313f-4c3a-afee-4b4ee864275e'
-                                }
-                                alt="mauricelacroix"
-                            />
-                        </div>
-                    </Link>
+                    <div className="wrap-img-home">
+                        <img
+                            className="img-home"
+                            src={
+                                'https://firebasestorage.googleapis.com/v0/b/watches-395b6.appspot.com/o/mouricelacroix.png?alt=media&token=48af3996-313f-4c3a-afee-4b4ee864275e'
+                            }
+                            alt="mauricelacroix"
+                        />
+                    </div>
                 </div>
                 <div className="row-2">
                     <div className="wrap-img-home">
@@ -109,17 +107,15 @@ function DefaultContent() {
                             alt="glycine"
                         />
                     </div>
-                    <Link to={'/brand/2'}>
-                        <div className="wrap-img-home">
-                            <img
-                                className="img-home"
-                                src={
-                                    'https://firebasestorage.googleapis.com/v0/b/watches-395b6.appspot.com/o/westendwatchc.png?alt=media&token=de2fecd9-1e64-4dbd-9e8c-fae621d9eece'
-                                }
-                                alt="westendwatch"
-                            />
-                        </div>
-                    </Link>
+                    <div className="wrap-img-home">
+                        <img
+                            className="img-home"
+                            src={
+                                'https://firebasestorage.googleapis.com/v0/b/watches-395b6.appspot.com/o/westendwatchc.png?alt=media&token=de2fecd9-1e64-4dbd-9e8c-fae621d9eece'
+                            }
+                            alt="westendwatch"
+                        />
+                    </div>
                 </div>
             </div>
         </>

@@ -27,3 +27,4 @@ export const urnUploadImagesResized = (time) => '/api/image/upload-resized/' + t
 
 //login
 export const urnLogin = '/api/auth/login/';
+export const urnRefreshToken = '/api/auth/refresh-token/';

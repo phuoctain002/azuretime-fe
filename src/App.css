@@ -23,7 +23,12 @@ ul {
     font-family: Tahoma, Arial, sans-serif;
     color: #fff;
     background-color: #000;
+
     min-height: 100vh;
+}
+
+html {
+    background-color: #000;
 }
 
 .header {
@@ -58,7 +63,7 @@ ul {
     list-style: none;
     align-items: center;
     height: 100%;
-    margin-left: 31vw;
+    margin-left: 12vw;
 }
 
 .navbar-list a {
@@ -66,7 +71,7 @@ ul {
 }
 
 .navbar-list-item {
-    padding: 0 32px;
+    padding: 0 3vw;
     font-size: 13px;
     cursor: pointer;
     text-transform: uppercase;
@@ -77,9 +82,9 @@ ul {
 }
 
 .azure-logo {
-    position: absolute;
-    top: 0;
-    left: 154px;
+    /* top: 0;
+    left: 154px; */
+    margin-top: -22px;
     width: var(--sidebar-width);
 }
 
@@ -87,8 +92,9 @@ ul {
     display: flex;
     flex-direction: column;
     width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
     background-color: #313131;
-    margin-left: 154px;
+    margin-left: 12vw;
     border: 1px solid #666;
     height: auto;
     padding-bottom: 50px;
@@ -255,8 +261,9 @@ ul {
 }
 
 .default-content {
-    margin: 27px 0 20px -18px;
-    max-width: 60vw;
+    margin: 27px 0 20px 0;
+    max-width: 60%;
+    width: 60vw;
 }
 
 .default-content .row-1,
@@ -269,12 +276,12 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 162px;
+    height: 12vw;
     width: 299px;
 }
 
 .img-home {
-    /* height: 100%; */
+    width: 100%;
 }
 
 /* ==== PRODUCTS BRAND ===== */

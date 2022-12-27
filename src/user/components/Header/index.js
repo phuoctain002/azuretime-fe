@@ -35,6 +35,16 @@ function Header() {
                 <div className="navbar">
                     <ul className="navbar-list">
                         <Link to={'/'}>
+                            <div className="azure-logo">
+                                <img
+                                    src={
+                                        'https://firebasestorage.googleapis.com/v0/b/firjewelry-871f7.appspot.com/o/Watch-Logo%2Flogo.png?alt=media&token=9c5b4894-5e64-49d7-a069-29df3bd6b315'
+                                    }
+                                    alt="logo"
+                                />
+                            </div>
+                        </Link>
+                        <Link to={'/'}>
                             <li className="navbar-list-item">{t('HOME')}</li>
                         </Link>
                         {posts &&
@@ -49,16 +59,6 @@ function Header() {
                             })}
                     </ul>
                 </div>
-                <Link to={'/'}>
-                    <div className="azure-logo">
-                        <img
-                            src={
-                                'https://firebasestorage.googleapis.com/v0/b/firjewelry-871f7.appspot.com/o/Watch-Logo%2Flogo.png?alt=media&token=9c5b4894-5e64-49d7-a069-29df3bd6b315'
-                            }
-                            alt="logo"
-                        />
-                    </div>
-                </Link>
             </div>
         </>
     );

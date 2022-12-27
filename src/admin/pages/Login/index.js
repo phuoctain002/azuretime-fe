@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { actLogin } from '../../../redux/actions/adminAccount';
 import axios from 'axios';
 import { url } from '../../../api/url';
-import { urnLogin } from '../../../api/urn';
+import { urnLogin, urnRefreshToken } from '../../../api/urn';
 
 function AdminLogin() {
     const dispatch = useDispatch();
@@ -21,7 +21,6 @@ function AdminLogin() {
         sessionStorage.setItem('isLogin', false);
     }
 
-    // const navigate = useNavigate();
     const handleLogin = () => {
         const action = actLogin(true);
         dispatch(action);
@@ -31,12 +30,26 @@ function AdminLogin() {
         });
     };
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         console.log(values);
-        axios.post(url + urnLogin, values).then((res) => {
+        //login
+        await axios.post(url + urnLogin, values).then((res) => {
             if (res.data.result) {
+                console.log('login');
+                sessionStorage.setItem('accessToken', res.data.accessToken);
+
                 setAccount(res.data.account);
                 handleLogin();
+
+                // axios.request({
+                //     method: 'POST',
+                //     url: url + urnRefreshToken,
+                //     headers: {
+                //         'X-Authorization': sessionStorage.getItem('accessToken'),
+                //     },
+                //     data: res.data.refreshToken,
+                // });
+                // console.log('refresh');
             } else {
                 notification.error({ message: `Mật khẩu không đúng!`, duration: 3 });
             }
@@ -108,7 +121,7 @@ function AdminLogin() {
                                         span: 16,
                                     }}
                                 >
-                                    <Button type="primary" htmlType="submit" className='login-btn'>
+                                    <Button type="primary" htmlType="submit" className="login-btn">
                                         Submit
                                     </Button>
                                 </Form.Item>
