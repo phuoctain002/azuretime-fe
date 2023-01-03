@@ -5,124 +5,17 @@ import { url } from '../../../api/url';
 import { urnBrand, urnCate } from '../../../api/urn';
 import { useTranslation } from 'react-i18next';
 import '../../../App.css';
-
-function Gender(props) {
-    const gender = [1, 2];
-    const { idCate } = props;
-    const [currentIndex, setCurrentIndex] = useState(0);
-    useEffect(() => {
-        setCurrentIndex(JSON.parse(localStorage.getItem('onClickGenderId')));
-    }, []);
-    const handleClick = (i) => {
-        return setCurrentIndex(i);
-    };
-
-    return (
-        <>
-            <ul className="sub-level-2 fade-sidebar-0dot3s">
-                {gender &&
-                    gender.map((item, i) => {
-                        return (
-                            <li key={i}>
-                                {/* {console.log('index', item)} */}
-                                <Link to={'/category/' + idCate + '/' + item}>
-                                    <span
-                                        className={`sub-level-2-heading ${i === currentIndex ? ' active' : ''}`}
-                                        onClick={() => {
-                                            localStorage.setItem('onClickGenderId', JSON.stringify(i));
-                                            localStorage.setItem('onClickGender', JSON.stringify(item));
-                                            handleClick(i);
-                                        }}
-                                    >
-                                        {item === 1 ? 'Men' : 'Women'}
-                                    </span>
-                                </Link>
-                            </li>
-                        );
-                    })}
-            </ul>
-        </>
-    );
-}
-
-function CateList(props) {
-    const { dataCate } = props;
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        setCurrentIndex(JSON.parse(localStorage.getItem('onClickCateId')));
-    }, []);
-    const handleClick = (i) => {
-        return setCurrentIndex(i);
-    };
-
-    return (
-        <>
-            <ul className="sub-level fade-sidebar-0dot5s">
-                {dataCate &&
-                    dataCate.map((item, i) => {
-                        return (
-                            <li key={i}>
-                                <Link to={'/category/' + item.idCategory + '/' + 0}>
-                                    <span
-                                        className={`sub-level-heading ${i === currentIndex ? ' active' : ''}`}
-                                        onClick={() => {
-                                            localStorage.setItem('onClickGenderId', JSON.stringify(-1));
-                                            localStorage.setItem('onClickCateId', JSON.stringify(i));
-                                            localStorage.setItem('onClickGender', JSON.stringify(0));
-                                            localStorage.setItem('onClickCate', JSON.stringify(item));
-                                            handleClick(i);
-                                        }}
-                                    >
-                                        {item.nameCategory}
-                                    </span>
-                                </Link>
-                                {i === currentIndex && Number(item.gender) === 1 && <Gender idCate={item.idCategory} />}
-                            </li>
-                        );
-                    })}
-            </ul>
-        </>
-    );
-}
+import { CateList } from './CateList';
+import { useDispatch, useSelector } from 'react-redux';
+import { clickBrand, clickCate } from 'src/redux/slice/sidebar';
 
 function Sidebar(props) {
+    const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
-    const [brand, setBrand] = useState([
-        {
-            idBrand: 1,
-            name: 'Maurice Lacroix',
-        },
-        {
-            idBrand: 2,
-            name: 'West End',
-        },
-        {
-            idBrand: 3,
-            name: 'Watch Accessories',
-        },
-        {
-            idBrand: 4,
-            name: 'Rolex',
-        },
-        {
-            idBrand: 5,
-            name: 'Hublot',
-        },
-        {
-            idBrand: 6,
-            name: 'Tudor',
-        },
-        {
-            idBrand: 7,
-            name: 'Jaeger LeCoultre',
-        },
-        {
-            idBrand: 8,
-            name: 'Versace',
-        },
-    ]);
+    const [brand, setBrand] = useState([]);
     const [category, setCategory] = useState([]);
+    const currentIndex = useSelector((state) => state.sidebar.brand.index);
+
     useEffect(() => {
         // get Brands
         axios.get(url + urnBrand).then((res) => {
@@ -134,15 +27,6 @@ function Sidebar(props) {
         });
     }, []);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    useEffect(() => {
-        setCurrentIndex(JSON.parse(localStorage.getItem('onClickBrandId')));
-    }, []);
-
-    const handleClick = (i) => {
-        return setCurrentIndex(i);
-    };
-    console.log('onClickBrandId', currentIndex);
     return (
         <>
             <div className="sidebar">
@@ -165,16 +49,39 @@ function Sidebar(props) {
                                         <Link to={'/brand/' + item.idBrand}>
                                             <span
                                                 onClick={() => {
-                                                    localStorage.setItem('onClickGenderId', JSON.stringify(-1));
-                                                    localStorage.setItem('onClickBrandId', JSON.stringify(i));
-                                                    localStorage.setItem('onClickCateId', JSON.stringify(-1));
-                                                    localStorage.setItem(
-                                                        'cates',
-                                                        JSON.stringify(
-                                                            category.filter((x) => x.idBrand === item.idBrand),
-                                                        ),
+                                                    // localStorage.setItem('onClickGenderId', JSON.stringify(-1));
+                                                    // localStorage.setItem('onClickBrandId', JSON.stringify(i));
+                                                    // localStorage.setItem('onClickCateId', JSON.stringify(-1));
+                                                    // localStorage.setItem(
+                                                    //     'cates',
+                                                    //     JSON.stringify(
+                                                    //         category.filter((x) => x.idBrand === item.idBrand),
+                                                    //     ),
+                                                    // );
+                                                    dispatch(
+                                                        clickBrand({
+                                                            index: i,
+                                                            idBrand: item.idBrand,
+                                                            nameBrand: item.nameBrand,
+                                                        }),
                                                     );
-                                                    setCurrentIndex(i);
+                                                    let catesByBrand = category.filter(
+                                                        (x) => x.idBrand === item.idBrand,
+                                                    );
+                                                    if (
+                                                        catesByBrand.length === 0 ||
+                                                        (catesByBrand.length === 1 &&
+                                                            catesByBrand[0].nameCategory === item.nameCategory)
+                                                    ) {
+                                                        dispatch(
+                                                            clickCate({
+                                                                index: i,
+                                                                idCate: catesByBrand[0].idCategory,
+                                                                nameCate: item.nameBrand,
+                                                            }),
+                                                        );
+                                                    }
+                                                    // setCurrentIndex(i);
                                                 }}
                                                 className={`main-level-heading ${i === currentIndex ? ' active' : ''}`}
                                             >
@@ -184,7 +91,10 @@ function Sidebar(props) {
                                         {i === currentIndex && (
                                             <CateList
                                                 className="cate-list"
-                                                dataCate={category.filter((x) => x.idBrand === item.idBrand)}
+                                                dataCate={category.filter(
+                                                    (x) =>
+                                                        x.idBrand === item.idBrand && x.nameCategory !== item.nameBrand,
+                                                )}
                                             />
                                         )}
                                     </li>

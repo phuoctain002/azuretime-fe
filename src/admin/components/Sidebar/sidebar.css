@@ -70,6 +70,7 @@
 
 .account-name {
     color: cyan;
+    text-transform: capitalize;
 }
 
 .account-icon {

@@ -1,64 +1,51 @@
 // import HeaderAdmin from '../components/Header';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input, notification } from 'antd';
-import auth from '../../../routes/auth';
 import '../../pages/admin.css';
 import { privateRoutes } from '../../../routes/index';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { actLogin } from '../../../redux/actions/adminAccount';
+import { Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { url } from '../../../api/url';
 import { urnLogin, urnRefreshToken } from '../../../api/urn';
+import { ad_login } from '../../../redux/slice/adminAccount';
 
 function AdminLogin() {
     const dispatch = useDispatch();
-    const [isLogin, setIsLogin] = useState(false); //có thể sd ueSelector
+    const isLogin = useSelector((state) => state.adminAccount.isLogin); //có thể sd ueSelector
     const [account, setAccount] = useState({});
 
-    if (!JSON.parse(sessionStorage.getItem('isLogin'))) {
-        sessionStorage.setItem('isLogin', false);
-    }
+    // if (!JSON.parse(sessionStorage.getItem('isLogin'))) {
+    //     sessionStorage.setItem('isLogin', false);
+    // }
 
-    const handleLogin = () => {
-        const action = actLogin(true);
-        dispatch(action);
+    const handleLogin = (username, role) => {
+        dispatch(ad_login({ username, role, isLogin: true }));
         sessionStorage.setItem('isLogin', true);
-        auth.login(() => {
-            setIsLogin(true);
-        });
     };
 
     const onFinish = async (values) => {
         console.log(values);
         //login
-        await axios.post(url + urnLogin, values).then((res) => {
-            if (res.data.result) {
-                console.log('login');
-                sessionStorage.setItem('accessToken', res.data.accessToken);
-
-                setAccount(res.data.account);
-                handleLogin();
-
-                // axios.request({
-                //     method: 'POST',
-                //     url: url + urnRefreshToken,
-                //     headers: {
-                //         'X-Authorization': sessionStorage.getItem('accessToken'),
-                //     },
-                //     data: res.data.refreshToken,
-                // });
-                // console.log('refresh');
-            } else {
-                notification.error({ message: `Mật khẩu không đúng!`, duration: 3 });
-            }
-        });
+        await axios
+            .post(url + urnLogin, values)
+            .then((res) => {
+                if (res.data.result) {
+                    sessionStorage.setItem('accessToken', res.data.accessToken);
+                    setAccount(res.data.account);
+                    handleLogin(values.username, 'Administrator', true);
+                } else {
+                    notification.error({ message: `Mật khẩu không đúng!`, duration: 3 });
+                }
+            })
+            .catch((error) => {
+                notification.error({ message: error.response.data, duration: 3 });
+            });
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
     if (!isLogin) {
         return (
             <>

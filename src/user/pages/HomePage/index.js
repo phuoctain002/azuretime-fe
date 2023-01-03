@@ -2,7 +2,7 @@ import DefaultContent from '../../components/RightContent/homeCont';
 import { useEffect } from 'react';
 
 function HomePage() {
-    document.title = 'Azuretime';
+    document.title = 'Chrono24us';
     useEffect(() => {
         localStorage.setItem('onClickBrandId', JSON.stringify(-1));
         localStorage.setItem('onClickCateId', JSON.stringify(-1));

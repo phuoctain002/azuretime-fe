@@ -394,7 +394,7 @@ function ProductTypes() {
                         <div onClick={() => handleAddProduct(record)}>
                             <Tooltip placement="topLeft" title="Thêm sản phẩm">
                                 <Link
-                                    to={'/admin/create-product/' + record.idBrand + '/' + record.idCategory}
+                                    to={'/administrator/create-product/' + record.idBrand + '/' + record.idCategory}
                                     style={{ color: '#1677ff', marginRight: 10, fontWeight: 'bold' }}
                                 >
                                     Thêm

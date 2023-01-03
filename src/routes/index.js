@@ -21,15 +21,15 @@ const publicRoutes = [
 
 const privateRoutes = [
     // Admin - Product
-    { path: '/admin/', component: Admin },
-    { path: '/admin/products/', component: AdminProduct },
-    { path: '/admin/create-product/:idBrand/:idCategory', component: AdminCreateProduct },
-    { path: '/admin/create-product/', component: AdminCreateProduct },
-    { path: '/admin/update-product/:idProduct', component: AdminUpdateProduct },
+    { path: '/administrator/', component: Admin },
+    { path: '/administrator/products/', component: AdminProduct },
+    { path: '/administrator/create-product/:idBrand/:idCategory', component: AdminCreateProduct },
+    { path: '/administrator/create-product/', component: AdminCreateProduct },
+    { path: '/administrator/update-product/:idProduct', component: AdminUpdateProduct },
     // Admin - Product types
-    { path: '/admin/product-types/', component: AdminProductTypes },
+    { path: '/administrator/product-types/', component: AdminProductTypes },
 ];
 
-const loginRoute = { path: '/admin/login', component: AdminLogin } //public route
+const loginRoute = { path: '/administrator/login', component: AdminLogin }; //public route
 
 export { publicRoutes, privateRoutes, loginRoute };

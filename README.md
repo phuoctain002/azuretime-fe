@@ -1,3 +1,12 @@
+# htaccess
+
+RewriteEngine on
+RewriteRule ^administrator /index.html
+RewriteRule ^brand /index.html
+RewriteRule ^category /index.html
+RewriteRule ^detail /index.html
+RewriteRule ^posts /index.html
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

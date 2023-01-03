@@ -4,43 +4,35 @@ import { Tooltip } from 'antd';
 import { CgRing } from 'react-icons/cg';
 import './sidebar.css';
 import '../../../App.css';
-import { Link, useLocation } from 'react-router-dom';
-import auth from '../../../routes/auth';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { actLogin } from '../../../redux/actions/adminAccount';
+import { Link, redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ad_logout } from '../../../redux/slice/adminAccount';
+
 function SidebarAdmin() {
-    const { state } = useLocation();
-    const { username, password, role } = state;
+    const username = useSelector((state) => state.adminAccount.username);
+    const role = useSelector((state) => state.adminAccount.role);
     const dispatch = useDispatch();
-    const [isLogin, setIsLogin] = useState(true); //có thể sd ueSelector
 
-    // const navigate = useNavigate();
     const handleLogout = () => {
-        const action = actLogin(false);
-        dispatch(action);
-        sessionStorage.setItem('isLogin', false);
-        auth.logout(() => {
-            setIsLogin(false);
-        });
+        dispatch(ad_logout({ username: '', role: '', isLogin: false }));
+        redirect('/administrator/login');
     };
-
     return (
         <div>
             <div className="sidebar-admin">
                 <div className="function-menu">
                     <div className="company-name">
-                        <Link to={'/admin/'}>
+                        <Link to={'/administrator/'}>
                             <h1 className="company-name-label">AZURETIME</h1>
                         </Link>
                     </div>
-                    <Link to={'/admin/product-types/'} style={{ color: '#9ea4b3' }}>
+                    <Link to={'/administrator/product-types/'} style={{ color: '#9ea4b3' }}>
                         <div className="function-menu-btn">
                             <AiOutlineGold className="menu-icon" />
                             <label className="function-menu-label">Loại sản phẩm</label>
                         </div>
                     </Link>
-                    <Link to={'/admin/products/'} style={{ color: '#9ea4b3' }}>
+                    <Link to={'/administrator/products/'} style={{ color: '#9ea4b3' }}>
                         <div className="function-menu-btn">
                             <CgRing className="menu-icon" />
                             <label className="function-menu-label">Sản phẩm</label>

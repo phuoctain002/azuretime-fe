@@ -307,7 +307,7 @@ function CreateProduct() {
         <div className="wrap-content-admin">
             <Row>
                 <Col span={20}>
-                    <Link to={'/admin/products/'}>
+                    <Link to={'/administrator/products/'}>
                         <Button type="text">
                             <ArrowLeftOutlined />
                             Back

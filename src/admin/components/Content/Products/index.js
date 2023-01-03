@@ -55,7 +55,7 @@ function Product() {
             render: (_, row) => {
                 return (
                     <div>
-                        <Link to={'/admin/update-product/' + row.idProduct}>{_}</Link>
+                        <Link to={'/administrator/update-product/' + row.idProduct}>{_}</Link>
                     </div>
                 );
             },
@@ -89,7 +89,7 @@ function Product() {
             key: 'action',
             render: (_, record, ìndex) => (
                 <Space size="middle">
-                    <Link to={'/admin/update-product/' + record.idProduct}>
+                    <Link to={'/administrator/update-product/' + record.idProduct}>
                         <a>Sửa</a>
                     </Link>
 
@@ -193,7 +193,7 @@ function Product() {
                     </div>
                 </Col>
                 <Col span={4}>
-                    <Link to={'/admin/create-product/'}>
+                    <Link to={'/administrator/create-product/'}>
                         <Button type="primary" style={{ backgroundColor: '#44bd32' }}>
                             Tạo sản phẩm
                         </Button>

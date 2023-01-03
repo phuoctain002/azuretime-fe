@@ -1,7 +1,7 @@
 import CategoryContent from '../../components/RightContent/cateCont';
 
 function CategoryPage() {
-    document.title = 'Azuretime';
+    document.title = 'Chrono24us';
     return <CategoryContent />;
 }
 

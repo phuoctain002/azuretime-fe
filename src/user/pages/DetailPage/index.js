@@ -1,7 +1,7 @@
 import DetailContent from '../../components/RightContent/detailCont';
 
 function DetailPage() {
-    document.title = 'Azuretime';
+    document.title = 'Chrono24us';
     return <DetailContent />;
 }
 

@@ -1,9 +1,11 @@
-import { createStore  } from 'redux';
-import allReducers from '../reducers/index';
+import { configureStore } from '@reduxjs/toolkit';
+import adminAccount from '../slice/adminAccount';
+import sidebar from '../slice/sidebar';
 
-const store = createStore (
-  allReducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-
+const store = configureStore({
+    reducer: {
+        adminAccount: adminAccount,
+        sidebar: sidebar,
+    },
+});
 export default store;
