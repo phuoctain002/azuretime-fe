@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { url } from '../../../api/url';
 import { urnBrand, urnCate } from '../../../api/urn';
@@ -29,60 +29,54 @@ function Sidebar(props) {
 
     return (
         <>
-            <div className="sidebar">
-                <div className="search">
-                    <label className="search-label">{t('Search.1')}</label>
-                    <div className="input-form">
-                        <input className="search-input" />
-                        <div className="search-btn">
+            <div className='sidebar'>
+                <div className='search'>
+                    <label className='search-label'>{t('Search.1')}</label>
+                    <div className='input-form'>
+                        <input className='search-input' />
+                        <div className='search-btn'>
                             <span>{t('Search.2')}</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="produts">
-                    <ul className="main-level fade-sidebar-0dot3s">
+                <div className='produts'>
+                    <ul className='main-level fade-sidebar-0dot3s'>
                         {brand &&
                             brand.map((item, i) => {
+                                let catesByBrand = category.filter((x) => x.idBrand === item.idBrand);
                                 return (
                                     <li key={i}>
-                                        <Link to={'/brand/' + item.idBrand}>
-                                            <span
-                                                onClick={() => {
-                                                    // localStorage.setItem('onClickGenderId', JSON.stringify(-1));
-                                                    // localStorage.setItem('onClickBrandId', JSON.stringify(i));
-                                                    // localStorage.setItem('onClickCateId', JSON.stringify(-1));
-                                                    // localStorage.setItem(
-                                                    //     'cates',
-                                                    //     JSON.stringify(
-                                                    //         category.filter((x) => x.idBrand === item.idBrand),
-                                                    //     ),
-                                                    // );
+                                        <Link
+                                            to={
+                                                catesByBrand.length === 1 &&
+                                                catesByBrand[0].nameCategory === item.nameBrand
+                                                    ? '/category/' + catesByBrand[0].idCategory + '/' + 0
+                                                    : '/brand/' + item.idBrand
+                                            }
+                                            onClick={() => {
+                                                dispatch(
+                                                    clickBrand({
+                                                        index: i,
+                                                        idBrand: item.idBrand,
+                                                        nameBrand: item.nameBrand,
+                                                    }),
+                                                );
+                                                if (
+                                                    catesByBrand.length === 1 &&
+                                                    catesByBrand[0].nameCategory === item.nameBrand
+                                                ) {
                                                     dispatch(
-                                                        clickBrand({
+                                                        clickCate({
                                                             index: i,
-                                                            idBrand: item.idBrand,
-                                                            nameBrand: item.nameBrand,
+                                                            idCate: catesByBrand[0].idCategory,
+                                                            nameCate: item.nameBrand,
                                                         }),
                                                     );
-                                                    let catesByBrand = category.filter(
-                                                        (x) => x.idBrand === item.idBrand,
-                                                    );
-                                                    if (
-                                                        catesByBrand.length === 0 ||
-                                                        (catesByBrand.length === 1 &&
-                                                            catesByBrand[0].nameCategory === item.nameCategory)
-                                                    ) {
-                                                        dispatch(
-                                                            clickCate({
-                                                                index: i,
-                                                                idCate: catesByBrand[0].idCategory,
-                                                                nameCate: item.nameBrand,
-                                                            }),
-                                                        );
-                                                    }
-                                                    // setCurrentIndex(i);
-                                                }}
+                                                }
+                                            }}
+                                        >
+                                            <span
                                                 className={`main-level-heading ${i === currentIndex ? ' active' : ''}`}
                                             >
                                                 {item.nameBrand}
@@ -90,7 +84,7 @@ function Sidebar(props) {
                                         </Link>
                                         {i === currentIndex && (
                                             <CateList
-                                                className="cate-list"
+                                                className='cate-list'
                                                 dataCate={category.filter(
                                                     (x) =>
                                                         x.idBrand === item.idBrand && x.nameCategory !== item.nameBrand,
@@ -103,7 +97,7 @@ function Sidebar(props) {
                     </ul>
                 </div>
 
-                <hr className="hrSidebar" />
+                <hr className='hrSidebar' />
 
                 {/* <div className="online">
                     <div>
@@ -120,11 +114,11 @@ function Sidebar(props) {
                     </div>
                 </div> */}
 
-                <div className="chrono24-logo">
-                    <a href="https://www.chrono24.com" target="_blank" rel="noreferrer">
+                <div className='chrono24-logo'>
+                    <a href='https://www.chrono24.com' target='_blank' rel='noreferrer'>
                         <img
                             src={'https://www.chrono24.com/others/trusted-seller-icon.htm?format=180&id=420'}
-                            alt="logo"
+                            alt='logo'
                         />
                     </a>
                 </div>
