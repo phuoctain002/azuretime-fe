@@ -4,14 +4,14 @@ const initialState = {
     brand: {
         index: -1,
         idBrand: -1,
-        nameBrand: "",
+        nameBrand: '',
     },
     cate: {
         index: -1,
         idCate: -1,
-        nameCate: "",
+        nameCate: '',
     },
-    gender: -1,
+    idGender: -1,
 };
 
 const sidebar = createSlice({
@@ -23,13 +23,13 @@ const sidebar = createSlice({
             state.cate = {
                 index: -1,
                 idCate: -1,
-                nameCate: "",
+                nameCate: '',
             };
-            state.gender = -1;
+            state.idGender = -1;
         },
         clickCate: (state, action) => {
             state.cate = action.payload;
-            state.gender = -1;
+            state.idGender = 0;
         },
     },
 });

@@ -1,23 +1,18 @@
-import { Gender } from "./Gender";
+import { useSelector, useDispatch } from 'react-redux';
+import { clickCate } from 'src/redux/slice/sidebar';
+import { Gender } from './Gender';
 
-const { useState, useEffect } = require("react");
-const { Link } = require("react-router-dom");
+const { useState, useEffect } = require('react');
+const { Link } = require('react-router-dom');
 
 export function CateList(props) {
+    const dispatch = useDispatch();
     const { dataCate } = props;
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        setCurrentIndex(JSON.parse(localStorage.getItem('onClickCateId')));
-    }, []);
-    
-    const handleClick = (i) => {
-        return setCurrentIndex(i);
-    };
+    const currentIndex = useSelector((state) => state.sidebar.cate.index);
 
     return (
         <>
-            <ul className="sub-level fade-sidebar-0dot5s">
+            <ul className='sub-level fade-sidebar-0dot5s'>
                 {dataCate &&
                     dataCate.map((item, i) => {
                         return (
@@ -26,11 +21,13 @@ export function CateList(props) {
                                     <span
                                         className={`sub-level-heading ${i === currentIndex ? ' active' : ''}`}
                                         onClick={() => {
-                                            localStorage.setItem('onClickGenderId', JSON.stringify(-1));
-                                            localStorage.setItem('onClickCateId', JSON.stringify(i));
-                                            localStorage.setItem('onClickGender', JSON.stringify(0));
-                                            localStorage.setItem('onClickCate', JSON.stringify(item));
-                                            handleClick(i);
+                                            dispatch(
+                                                clickCate({
+                                                    index: i,
+                                                    idCate: item.idCategory,
+                                                    nameCate: item.nameCategory,
+                                                }),
+                                            );
                                         }}
                                     >
                                         {item.nameCategory}
