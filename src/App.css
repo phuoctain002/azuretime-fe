@@ -101,7 +101,6 @@ html {
     margin-left: 12vw;
     border: 1px solid #666;
     height: auto;
-    padding-bottom: 50px;
 }
 
 .search {
@@ -152,6 +151,7 @@ html {
     margin-right: auto;
     margin-top: 8px;
     margin-bottom: 10px;
+    min-height: 296px;
 }
 .main-level {
     width: 170px;
@@ -173,7 +173,7 @@ html {
     background-color: transparent;
     padding-left: 14px;
     font-size: 13px;
-    animation: growDown 0.5s ease forwards;
+    animation: growDown 0.2s ease forwards;
     transform-origin: top center;
     /* display: none; */
 }
@@ -221,7 +221,7 @@ html {
 }
 
 .hrSidebar {
-    border-bottom: 1px solid #4c4c4d;
+    border: 0.5px solid #464648;
     width: 156px;
     margin-left: 38px;
 }
@@ -252,6 +252,10 @@ html {
 
 .chrono24-logo {
     margin-left: 26px;
+}
+
+.chrono24-logo img {
+    filter: brightness(1.5);
 }
 
 #appView .hitCounter .counterTable .counterRow .powrMark {

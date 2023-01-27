@@ -7,12 +7,12 @@ const { Link } = require('react-router-dom');
 
 export function CateList(props) {
     const dispatch = useDispatch();
-    const { dataCate } = props;
+    const { idBrand, dataCate } = props;
     const currentIndex = useSelector((state) => state.sidebar.cate.index);
-
+    console.log('dataCate', dataCate);
     return (
         <>
-            <ul className='sub-level fade-sidebar-0dot5s'>
+            <ul className="sub-level fade-sidebar-0dot5s">
                 {dataCate &&
                     dataCate.map((item, i) => {
                         return (

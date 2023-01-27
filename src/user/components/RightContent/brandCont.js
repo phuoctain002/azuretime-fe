@@ -3,21 +3,26 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { url, path } from '../../../api/url';
-import { urnPros } from '../../../api/urn';
+import { urnPros, urnCate } from '../../../api/urn';
 import { Translator, Translate } from 'react-auto-translate';
+import { useSelector } from 'react-redux';
 function Products(props) {
     const [pros, setPros] = useState([]);
+    const { idCate, nameCate } = props;
+
     useEffect(() => {
-        axios.get(url + urnPros(props.idCate)).then((res) => {
+        axios.get(url + urnPros(idCate)).then((res) => {
+            console.log('pros', res.data);
             setPros(res.data);
         });
-    }, [props.idCate]);
+    }, [idCate]);
+    // console.log('pros', pros);
     return (
         <>
             {pros.length > 0 && (
                 <div className="heading">
                     <div className="heading-label">
-                        <label>{props.nameCate}</label>
+                        <label>{nameCate}</label>
                     </div>
                 </div>
             )}
@@ -58,24 +63,24 @@ function Products(props) {
 function BrandContent() {
     const { idBrand } = useParams();
     const [cates, setCates] = useState([]);
+    // const cates = useSelector((state) => state.content.cates);
 
     useEffect(() => {
-        setCates(JSON.parse(localStorage.getItem('cates')));
+        axios.get(url + urnCate).then((res) => {
+            setCates(res.data.filter((x) => x.idBrand == idBrand));
+        });
     }, [idBrand]);
-
     return (
-        <Translator from="en" to="vi" googleApiKey="API_KEY">
-            <div className="content-brand">
-                {cates &&
-                    cates.map((item, index) => {
-                        return (
-                            <div key={index}>
-                                <Products idCate={item.idCategory} nameCate={item.nameCategory} index={index} />
-                            </div>
-                        );
-                    })}
-            </div>
-        </Translator>
+        <div className="content-brand">
+            {cates &&
+                cates.map((item, index) => {
+                    return (
+                        <div key={index}>
+                            <Products idCate={item.idCategory} nameCate={item.nameCategory} index={index} />
+                        </div>
+                    );
+                })}
+        </div>
     );
 }
 

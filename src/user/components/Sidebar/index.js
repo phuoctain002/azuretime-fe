@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import '../../../App.css';
 import { BrandList } from './BrandList';
 import { useDispatch, useSelector } from 'react-redux';
-import { clickBrand, clickCate } from 'src/redux/slice/sidebar';
+import { clickMainMenu } from 'src/redux/slice/sidebar';
 
 function Sidebar(props) {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ function Sidebar(props) {
     const [wristWatches, setWristWatches] = useState([]);
     const [accessories, setAccessories] = useState([]);
 
-    const currentIndex = useSelector((state) => state.sidebar.brand.index);
+    const currentIndex = useSelector((state) => state.sidebar.mainMenu.index);
 
     useEffect(() => {
         // get Brands
@@ -26,7 +26,7 @@ function Sidebar(props) {
             setAccessories(res.data.filter((w) => w.idMenu === 3));
         });
     }, []);
-    // console.log(wristWatches);
+    console.log(currentIndex);
     return (
         <>
             <div className="sidebar">
@@ -43,27 +43,71 @@ function Sidebar(props) {
                 <div className="produts">
                     <ul className="main-level fade-sidebar-0dot3s">
                         <li>
-                            <span className={`main-level-heading ${currentIndex === 1 ? ' active' : ''}`}>
+                            <span
+                                className={`main-level-heading ${currentIndex === 0 ? ' active' : ''}`}
+                                onClick={() => {
+                                    dispatch(
+                                        clickMainMenu({
+                                            index: 0,
+                                            idMenu: 0,
+                                            nameMenu: 'WRIST WATCHES',
+                                        }),
+                                    );
+                                }}
+                            >
                                 WRIST WATCHES
                             </span>
-                            {currentIndex === 1 && <BrandList className="brand-list" dataBrand={wristWatches} />}
+                            {currentIndex === 0 && <BrandList className="brand-list" dataBrand={wristWatches} />}
                         </li>
                         <li>
                             <Link>
-                                <span className={`main-level-heading ${currentIndex === 2 ? ' active' : ''}`}>
+                                <span
+                                    className={`main-level-heading ${currentIndex === 1 ? ' active' : ''}`}
+                                    onClick={() => {
+                                        dispatch(
+                                            clickMainMenu({
+                                                index: 1,
+                                                idMenu: 1,
+                                                nameMenu: 'POCKET WATCHES',
+                                            }),
+                                        );
+                                    }}
+                                >
                                     POCKET WATCHES
                                 </span>
                             </Link>
                         </li>
                         <li>
-                            <span className={`main-level-heading ${currentIndex === 3 ? ' active' : ''}`}>
+                            <span
+                                className={`main-level-heading ${currentIndex === 2 ? ' active' : ''}`}
+                                onClick={() => {
+                                    dispatch(
+                                        clickMainMenu({
+                                            index: 2,
+                                            idMenu: 2,
+                                            nameMenu: 'WATCHES ACCESSORIES',
+                                        }),
+                                    );
+                                }}
+                            >
                                 WATCHES ACCESSORIES
                             </span>
-                            {currentIndex === 3 && <BrandList className="brand-list" dataBrand={accessories} />}
+                            {currentIndex === 2 && <BrandList className="brand-list" dataBrand={accessories} />}
                         </li>
                         <li>
                             <Link>
-                                <span className={`main-level-heading ${currentIndex === 4 ? ' active' : ''}`}>
+                                <span
+                                    className={`main-level-heading ${currentIndex === 4 ? ' active' : ''}`}
+                                    onClick={() => {
+                                        dispatch(
+                                            clickMainMenu({
+                                                index: 3,
+                                                idMenu: 3,
+                                                nameMenu: 'CLOCK',
+                                            }),
+                                        );
+                                    }}
+                                >
                                     CLOCK
                                 </span>
                             </Link>
