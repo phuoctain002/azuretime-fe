@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { url, path } from '../../../api/url';
 import { urnPros } from '../../../api/urn';
+import { Translator, Translate } from 'react-auto-translate';
 function Products(props) {
     const [pros, setPros] = useState([]);
     useEffect(() => {
@@ -63,7 +64,7 @@ function BrandContent() {
     }, [idBrand]);
 
     return (
-        <>
+        <Translator from="en" to="vi" googleApiKey="API_KEY">
             <div className="content-brand">
                 {cates &&
                     cates.map((item, index) => {
@@ -74,7 +75,7 @@ function BrandContent() {
                         );
                     })}
             </div>
-        </>
+        </Translator>
     );
 }
 

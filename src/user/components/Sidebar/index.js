@@ -5,7 +5,7 @@ import { url } from '../../../api/url';
 import { urnBrand, urnCate } from '../../../api/urn';
 import { useTranslation } from 'react-i18next';
 import '../../../App.css';
-import { CateList } from './CateList';
+import { BrandList } from './BrandList';
 import { useDispatch, useSelector } from 'react-redux';
 import { clickBrand, clickCate } from 'src/redux/slice/sidebar';
 
@@ -13,20 +13,20 @@ function Sidebar(props) {
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
     const [brand, setBrand] = useState([]);
-    const [category, setCategory] = useState([]);
+    const [wristWatches, setWristWatches] = useState([]);
+    const [accessories, setAccessories] = useState([]);
+
     const currentIndex = useSelector((state) => state.sidebar.brand.index);
 
     useEffect(() => {
         // get Brands
         axios.get(url + urnBrand).then((res) => {
             setBrand(res.data);
-        });
-        // get All Category
-        axios.get(url + urnCate).then((res) => {
-            setCategory(res.data);
+            setWristWatches(res.data.filter((w) => w.idMenu === 1));
+            setAccessories(res.data.filter((w) => w.idMenu === 3));
         });
     }, []);
-
+    // console.log(wristWatches);
     return (
         <>
             <div className="sidebar">
@@ -42,64 +42,32 @@ function Sidebar(props) {
 
                 <div className="produts">
                     <ul className="main-level fade-sidebar-0dot3s">
-                        {brand &&
-                            brand.map((item, i) => {
-                                return (
-                                    <li key={i}>
-                                        <Link to={'/brand/' + item.idBrand}>
-                                            <span
-                                                onClick={() => {
-                                                    // localStorage.setItem('onClickGenderId', JSON.stringify(-1));
-                                                    // localStorage.setItem('onClickBrandId', JSON.stringify(i));
-                                                    // localStorage.setItem('onClickCateId', JSON.stringify(-1));
-                                                    // localStorage.setItem(
-                                                    //     'cates',
-                                                    //     JSON.stringify(
-                                                    //         category.filter((x) => x.idBrand === item.idBrand),
-                                                    //     ),
-                                                    // );
-                                                    dispatch(
-                                                        clickBrand({
-                                                            index: i,
-                                                            idBrand: item.idBrand,
-                                                            nameBrand: item.nameBrand,
-                                                        }),
-                                                    );
-                                                    let catesByBrand = category.filter(
-                                                        (x) => x.idBrand === item.idBrand,
-                                                    );
-                                                    if (
-                                                        catesByBrand.length === 0 ||
-                                                        (catesByBrand.length === 1 &&
-                                                            catesByBrand[0].nameCategory === item.nameCategory)
-                                                    ) {
-                                                        dispatch(
-                                                            clickCate({
-                                                                index: i,
-                                                                idCate: catesByBrand[0].idCategory,
-                                                                nameCate: item.nameBrand,
-                                                            }),
-                                                        );
-                                                    }
-                                                    // setCurrentIndex(i);
-                                                }}
-                                                className={`main-level-heading ${i === currentIndex ? ' active' : ''}`}
-                                            >
-                                                {item.nameBrand}
-                                            </span>
-                                        </Link>
-                                        {i === currentIndex && (
-                                            <CateList
-                                                className="cate-list"
-                                                dataCate={category.filter(
-                                                    (x) =>
-                                                        x.idBrand === item.idBrand && x.nameCategory !== item.nameBrand,
-                                                )}
-                                            />
-                                        )}
-                                    </li>
-                                );
-                            })}
+                        <li>
+                            <span className={`main-level-heading ${currentIndex === 1 ? ' active' : ''}`}>
+                                WRIST WATCHES
+                            </span>
+                            {currentIndex === 1 && <BrandList className="brand-list" dataBrand={wristWatches} />}
+                        </li>
+                        <li>
+                            <Link>
+                                <span className={`main-level-heading ${currentIndex === 2 ? ' active' : ''}`}>
+                                    POCKET WATCHES
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <span className={`main-level-heading ${currentIndex === 3 ? ' active' : ''}`}>
+                                WATCHES ACCESSORIES
+                            </span>
+                            {currentIndex === 3 && <BrandList className="brand-list" dataBrand={accessories} />}
+                        </li>
+                        <li>
+                            <Link>
+                                <span className={`main-level-heading ${currentIndex === 4 ? ' active' : ''}`}>
+                                    CLOCK
+                                </span>
+                            </Link>
+                        </li>
                     </ul>
                 </div>
 

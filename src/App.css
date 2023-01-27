@@ -43,6 +43,10 @@ html {
     width: fit-content;
     margin-left: auto;
     display: flex;
+    color: var(--text-color) !important;
+}
+
+.languageToggle .ant-select-selection-item {
 }
 
 .btnLang {
@@ -112,7 +116,7 @@ html {
 
 .input-form {
     display: flex;
-    width: 158px;
+    width: 170px;
     height: 21;
     line-height: 1;
     margin-left: auto;
@@ -120,7 +124,7 @@ html {
 }
 
 .search-input {
-    width: 105px;
+    width: 117px;
     color: #000;
     padding: 2px;
 }
@@ -150,7 +154,7 @@ html {
     margin-bottom: 10px;
 }
 .main-level {
-    width: 158px;
+    width: 170px;
 }
 
 .main-level-heading {
@@ -179,6 +183,8 @@ html {
     display: inline-block;
     width: 100%;
     line-height: 24px;
+    font-size: 13px;
+    padding-left: 12px;
 }
 
 .sub-level-2 {
