@@ -1,4 +1,5 @@
 import HomePage from '../user/pages/HomePage';
+import SearchPage from '../user/pages/SearchPage';
 import BrandPage from '../user/pages/BrandPage';
 import CategoryPage from '../user/pages/CatePage';
 import DetailPage from '../user/pages/DetailPage';
@@ -13,6 +14,7 @@ import AdminProductTypes from '../admin/pages/ProductTypes/index';
 import AdminLogin from '../admin/pages/Login';
 const publicRoutes = [
     { path: '/', component: HomePage },
+    { path: '/search/:searchInput', component: SearchPage },
     { path: '/brand/:idBrand', component: BrandPage },
     { path: '/category/:idCate/:gender', component: CategoryPage },
     { path: '/detail/:idProduct', component: DetailPage },
@@ -27,7 +29,7 @@ const privateRoutes = [
     { path: '/administrator/create-product/', component: AdminCreateProduct },
     { path: '/administrator/update-product/:idProduct', component: AdminUpdateProduct },
     // Admin - Product types
-    { path: '/administrator/product-types/', component: AdminProductTypes },
+    { path: '/administrator/product-types/:idMenu', component: AdminProductTypes },
 ];
 
 const loginRoute = { path: '/administrator/login', component: AdminLogin }; //public route

@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { url } from '../../../api/url';
-import { urnBrand, urnCate } from '../../../api/urn';
+import { urnBrand } from '../../../api/urn';
 import { useTranslation } from 'react-i18next';
 import '../../../App.css';
 import { BrandList } from './BrandList';
@@ -15,6 +15,7 @@ function Sidebar(props) {
     const [brand, setBrand] = useState([]);
     const [wristWatches, setWristWatches] = useState([]);
     const [accessories, setAccessories] = useState([]);
+    const [searchInput, setSearchInput] = useState('');
 
     const currentIndex = useSelector((state) => state.sidebar.mainMenu.index);
 
@@ -27,16 +28,27 @@ function Sidebar(props) {
         });
     }, []);
     console.log(currentIndex);
+
     return (
         <>
             <div className="sidebar">
                 <div className="search">
                     <label className="search-label">{t('Search.1')}</label>
                     <div className="input-form">
-                        <input className="search-input" />
-                        <div className="search-btn">
-                            <span>{t('Search.2')}</span>
-                        </div>
+                        <input className="search-input" onChange={(e) => setSearchInput(e.target.value)} />
+                        {searchInput !== '' ? (
+                            <Link to={'/search/' + searchInput}>
+                                <div className="search-btn">
+                                    <span>{t('Search.2')}</span>
+                                </div>
+                            </Link>
+                        ) : (
+                            <Link to={'/'}>
+                                <div className="search-btn">
+                                    <span>{t('Search.2')}</span>
+                                </div>
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -55,45 +67,46 @@ function Sidebar(props) {
                                     );
                                 }}
                             >
-                                WRIST WATCHES
+                                {t('WRIST WATCHES')}
                             </span>
                             {currentIndex === 0 && <BrandList className="brand-list" dataBrand={wristWatches} />}
                         </li>
                         <li>
-                            <Link>
-                                <span
-                                    className={`main-level-heading ${currentIndex === 1 ? ' active' : ''}`}
-                                    onClick={() => {
-                                        dispatch(
-                                            clickMainMenu({
-                                                index: 1,
-                                                idMenu: 1,
-                                                nameMenu: 'POCKET WATCHES',
-                                            }),
-                                        );
-                                    }}
-                                >
-                                    POCKET WATCHES
-                                </span>
-                            </Link>
-                        </li>
-                        <li>
                             <span
-                                className={`main-level-heading ${currentIndex === 2 ? ' active' : ''}`}
+                                className={`main-level-heading ${currentIndex === 1 ? ' active' : ''}`}
                                 onClick={() => {
                                     dispatch(
                                         clickMainMenu({
-                                            index: 2,
-                                            idMenu: 2,
+                                            index: 1,
+                                            idMenu: 1,
                                             nameMenu: 'WATCHES ACCESSORIES',
                                         }),
                                     );
                                 }}
                             >
-                                WATCHES ACCESSORIES
+                                {t('WATCHES ACCESSORIES')}
                             </span>
-                            {currentIndex === 2 && <BrandList className="brand-list" dataBrand={accessories} />}
+                            {currentIndex === 1 && <BrandList className="brand-list" dataBrand={accessories} />}
                         </li>
+                        <li>
+                            <Link>
+                                <span
+                                    className={`main-level-heading ${currentIndex === 2 ? ' active' : ''}`}
+                                    onClick={() => {
+                                        dispatch(
+                                            clickMainMenu({
+                                                index: 2,
+                                                idMenu: 2,
+                                                nameMenu: 'POCKET WATCHES',
+                                            }),
+                                        );
+                                    }}
+                                >
+                                    {t('POCKET WATCHES')}
+                                </span>
+                            </Link>
+                        </li>
+
                         <li>
                             <Link>
                                 <span
@@ -108,7 +121,7 @@ function Sidebar(props) {
                                         );
                                     }}
                                 >
-                                    CLOCK
+                                    {t('CLOCK')}
                                 </span>
                             </Link>
                         </li>

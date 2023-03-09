@@ -27,24 +27,13 @@
 }
 
 .function-menu-btn {
-    height: 50px;
-    /* width: 100px; */
-    transition: ease 0.2s;
     display: inline-block;
-    cursor: pointer;
-    margin: 2px 0;
-}
-
-.function-menu-btn:hover {
-    color: #171c2b !important;
-    background-color: #9ea4b3;
-    border-radius: 3px;
 }
 
 .menu-icon,
 .function-menu-label {
     font-size: 16px;
-    /* color: #9ea4b3; */
+    color: rgba(251, 194, 24, 0.802);
 }
 
 .menu-icon {
@@ -55,8 +44,27 @@
     display: inline-block;
     text-align: initial;
     width: 135px;
+    line-height: 40px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+.function-menu-btn-lv2 {
+    transition: ease 0.2s;
+    display: inline-block;
+}
+
+.function-menu-btn-lv2:hover {
+    color: rgba(251, 194, 24, 0.802);
+}
+
+.function-menu-label-lv2 {
+    display: inline-block;
+    text-align: initial;
+    width: 135px;
+    line-height: 40px;
+    font-size: 14px;
     cursor: pointer;
-    line-height: 50px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
 }
 
 .account-bottom {

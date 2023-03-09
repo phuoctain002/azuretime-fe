@@ -1,11 +1,26 @@
 {
     "key": "en",
+    "English": "English",
+    "Vietnamese": "Vietnamese",
     "HOME": "HOME",
     "about us": "ABOUT US",
     "how to buy": "HOW TO BUY",
     "terms of us": "TERMS OF US",
+
     "Search": {
         "1": "Search",
         "2": "Search"
-    }
+    },
+    "WRIST WATCHES": "WRIST WATCHES",
+    "WATCHES ACCESSORIES": "WATCHES ACCESSORIES",
+    "POCKET WATCHES": "POCKET WATCHES",
+    "CLOCK": "CLOCK",
+    
+    "Code": "Code",
+    "Price per Unit (piece)": "Price per Unit (piece)",
+    "Contact Seller": "Contact Seller",
+    "More Detail": "More Detail",
+    "Price": "Price",
+
+    "Search result": "Search result"
 }

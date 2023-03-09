@@ -30,23 +30,35 @@ ul {
 html {
     background-color: #000;
 }
-
+.backtop {
+    inset-inline-end: 50px !important;
+    inset-block-end: 40px !important;
+}
+.ant-back-top-content {
+    width: 50px !important;
+    height: 50px !important;
+}
+.ant-back-top-icon {
+    background-color: rgba(251, 194, 24, 1);
+    line-height: 50px !important;
+}
 .header {
     position: relative;
     height: 82px;
+    padding-top: 7px;
     /* width: 100vw; */
     width: 100%; /* nếu coder chọn vw thật ra ko lỗi chỉ sai mặt logic (mất 1 khoảng trống cho thanh scrollbar-thumb thì nó sẽ bồi thường lại) */
 }
 
 .languageToggle {
-    height: 23px;
-    width: fit-content;
-    margin-left: auto;
     display: flex;
-    color: var(--text-color) !important;
+    justify-content: end;
 }
 
-.languageToggle .ant-select-selection-item {
+.language-btn {
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 12px;
 }
 
 .btnLang {
@@ -85,11 +97,15 @@ html {
     text-decoration: underline;
 }
 
-.azure-logo {
+.chrono-logo {
     /* top: 0;
     left: 154px; */
     margin-top: -22px;
     width: var(--sidebar-width);
+}
+
+.chrono-logo-img {
+    width: 100%;
 }
 
 .sidebar {
@@ -204,19 +220,19 @@ html {
 }
 
 .active.main-level-heading {
-    color: red;
+    color: rgba(251, 194, 24, 1);
 }
 
 .active.sub-level-heading,
 .active.sub-level-2-heading {
-    color: red;
+    color: rgba(251, 194, 24, 1);
     font-weight: bold;
 }
 
 .main-level-heading:hover,
 .sub-level-heading:hover,
 .sub-level-2-heading:hover {
-    color: red;
+    color: rgba(251, 194, 24, 1);
     transition: 0.1s linear;
 }
 
@@ -299,6 +315,11 @@ html {
     display: flex;
 }
 
+.notice {
+    font-size: 16px;
+    margin: 40px 10px 0px 0px;
+}
+
 .row-pros {
     min-height: fit-content;
     max-width: 60vw;
@@ -324,9 +345,10 @@ html {
 .heading-label {
     min-width: 60px;
     height: 22px;
-    background-color: #a90a0a;
+    background-color: rgba(251, 194, 24, 1);
     padding: 0 10px;
     margin: 40px 10px 0 0px;
+    color: #000;
     font-size: 12px;
 }
 
@@ -335,6 +357,8 @@ html {
     line-height: 22px;
     width: 100%;
     display: inline-block;
+    color: #000;
+    font-weight: bold;
 }
 
 .card-wrap-brand {
@@ -347,12 +371,61 @@ html {
     width: 160px;
     height: 160px;
     background-size: cover;
+    position: relative;
+    margin: auto;
+}
+.overlay {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+    background-color: #fff;
 }
 
-.card-image img {
+/* .card-image:hover .card-image-img {
+    opacity: 0.5;
+} */
+
+.card-image:hover .overlay {
+    opacity: 0.8;
+}
+
+.overlay-text {
+    color: #000;
+    background-color: #ffbc00;
+    font-size: 16px;
+    padding: 16px 32px;
+    margin: 0 auto;
+    font-weight: 700;
+    width: 160px;
+}
+
+.card-image-img {
+    width: 160px;
+    height: 160px;
+    opacity: 1;
+    display: block;
+    margin: auto;
+    transition: 0.5s ease;
+    backface-visibility: hidden;
+}
+
+.card-image-border {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 
 .card-name {
@@ -367,14 +440,14 @@ html {
 
 .card-price {
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
     font-weight: bold;
     line-height: 1.6;
 }
 
 .card-more-detail {
     font-size: 13px;
-    color: rgb(255, 127, 0);
+    color: rgb(255, 96, 3);
     font-weight: bold;
     line-height: 1.6;
 }
@@ -410,18 +483,18 @@ html {
 
 .card-code-category {
     float: left;
-    line-height: 13px;
+    margin-bottom: 5px;
     font-weight: 900;
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
 }
 
 .card-name-category {
     float: left;
-    line-height: 13px;
+    margin-bottom: 5px;
     font-weight: 500;
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
 }
 
 .card-description-category {
@@ -439,7 +512,7 @@ html {
 
 .card-price-category {
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
     font-weight: bold;
     line-height: 1.6;
 }
@@ -458,13 +531,25 @@ html {
     display: flex;
 }
 .card-image-detail {
-    width: 200px;
-    height: 200px;
+    position: relative;
+    width: 206px;
+    height: auto;
     transition: fadeIn 0.2s;
+    padding: 6px;
 }
 
-.card-image-detail img {
-    width: 200px;
+.card-image-magnify {
+    /* width: 200px !important;
+    height: 200px !important; */
+    margin: auto;
+}
+.card-image-magnify-large {
+    background-color: #000;
+}
+.card-image-magnify-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .sub-images-list {
@@ -475,15 +560,17 @@ html {
 }
 
 .sub-images-item {
-    width: 50px;
-    height: 50px;
+    width: 64px;
+    height: 64px;
     margin-right: 2px;
     margin-top: 2px;
+    position: relative;
 }
 
 .sub-images-item img {
-    width: 50px;
-    height: 50px;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
 }
 
 .card-wrap-info {
@@ -501,7 +588,7 @@ html {
 
 .card-price-detail {
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
     font-weight: bold;
     line-height: 1.6;
 }
@@ -511,7 +598,7 @@ html {
     line-height: 13px;
     font-weight: 700;
     font-size: 13px;
-    color: red;
+    color: rgba(251, 194, 24, 1);
     margin-top: 32px;
 }
 
@@ -520,6 +607,10 @@ html {
     line-height: 20px;
     margin-bottom: 0;
     white-space: pre-line;
+}
+
+.video-frame {
+    margin-top: 20px;
 }
 
 .hitCounter .counterElement {

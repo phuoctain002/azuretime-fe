@@ -3,9 +3,10 @@
 // export const urnProduct = '/api/product/';
 // export const urnProductTypes = '/api/productTypes/';
 // export const urnImageByProductId = '/api/imageByProductId/';
-
+// export const urnAllPros = '/api/pros/'; // GET
 export const urnBrand = '/api/brand/';
 export const urnCate = '/api/cate/';
+export const urnSearch = (searchInput) => '/api/pros/search/' + searchInput;
 export const urnPros = (id) => '/api/pros/products/' + id;
 export const urnDetailProduct = (id) => '/api/pros/detail/' + id;
 export const urnPost = (id) => '/api/post/' + id;

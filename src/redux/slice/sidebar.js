@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     mainMenu: {
-        index: -1,
-        idMenu: -1,
-        nameMenu: '',
+        index: 0,
+        idMenu: 0,
+        nameMenu: 'WRIST WATCHES',
     },
     brand: {
         index: -1,

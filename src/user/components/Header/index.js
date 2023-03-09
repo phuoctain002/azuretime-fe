@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Select } from 'antd';
 import { Translator, Translate } from 'react-auto-translate';
+import { url, path } from '../../../api/url';
 
 function Header() {
     const { t, i18n } = useTranslation();
@@ -39,35 +40,20 @@ function Header() {
     return (
         <>
             <div className="header">
-                <Select
-                    className="languageToggle"
-                    defaultValue="en"
-                    style={{
-                        width: 120,
-                    }}
-                    onChange={(e) => handleClick(e)}
-                    options={[
-                        {
-                            value: 'en',
-                            label: 'English',
-                        },
-                        {
-                            value: 'vi',
-                            label: 'Vietnamese',
-                        },
-                    ]}
-                />
+                <div className="languageToggle">
+                    <span className="language-btn" onClick={() => handleClick('en')}>
+                        {t('English')}
+                    </span>
+                    <span className="language-btn" onClick={() => handleClick('vi')}>
+                        {t('Vietnamese')}
+                    </span>
+                </div>
 
                 <div className="navbar">
                     <ul className="navbar-list">
                         <Link to={'/'}>
-                            <div className="azure-logo">
-                                <img
-                                    src={
-                                        'https://firebasestorage.googleapis.com/v0/b/firjewelry-871f7.appspot.com/o/Watch-Logo%2Flogo.png?alt=media&token=9c5b4894-5e64-49d7-a069-29df3bd6b315'
-                                    }
-                                    alt="logo"
-                                />
+                            <div className="chrono-logo">
+                                <img className='chrono-logo-img' src={url + '/images/media/logo-chrono24.jpg'} alt="logo" />
                             </div>
                         </Link>
                         <Link to={'/'}>
@@ -75,26 +61,12 @@ function Header() {
                         </Link>
                         {posts &&
                             posts.map((item, index) => {
-                                // return (
-                                //     <Link to={'/posts/' + item.idPost}>
-                                //         <li className="navbar-list-item" key={index}>
-                                //             {t(`${item.title}`)}
-                                //         </li>
-                                //     </Link>
-                                // );
                                 return (
-                                    <Translator
-                                        // cacheProvider={cacheProvider}
-                                        from="en"
-                                        to="vi"
-                                        googleApiKey="AIzaSyBhemOOqODaAMIlIozyrOWkiNUf98SkXNM"
-                                    >
-                                        <Link to={'/posts/' + item.idPost}>
-                                            <li className="navbar-list-item" key={index}>
-                                                <Translate>HOME</Translate>
-                                            </li>
-                                        </Link>
-                                    </Translator>
+                                    <Link to={'/posts/' + item.idPost}>
+                                        <li className="navbar-list-item" key={index}>
+                                            {t(`${item.title}`)}
+                                        </li>
+                                    </Link>
                                 );
                             })}
                     </ul>

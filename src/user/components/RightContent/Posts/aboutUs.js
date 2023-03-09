@@ -1,9 +1,10 @@
+import { BackTop } from 'antd';
 import Item from 'antd/lib/list/Item';
 
 function AboutUs() {
     const post = {
         title: 'ABOUT US',
-        description: `Began with the first clock store in 1990, After more than 20 year of and serving development, at present Azuretime have been perfecting in the  aspect of commerce, online selling, direct sellingâ€¦ becoming a superior modern and professional retail system.
+        description: `Began with the first clock <span style="color: red">store in 1990</span>, After more than 20 year of and serving development, at present Azuretime have been perfecting in the  aspect of commerce, online selling, direct selling, becoming a superior modern and professional retail system.
 
     With the of operating guideline of making high quality products and the professional serving style, Azuretime have gained more and more credit of domestic and international customer
    
@@ -34,6 +35,9 @@ function AboutUs() {
     ];
     return (
         <div className="post-wrapper">
+            <div>
+                <BackTop className="backtop" />
+            </div>
             <div className="heading">
                 <div className="heading-label">
                     <label>{post.title}</label>

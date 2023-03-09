@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { url } from '../../../../api/url';
 import { urnBrand, urnCate, urnDeleteBrand, urnDeleteCate } from '../../../../api/urn';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function ProductTypes() {
     document.title = 'Admin - Thương hiệu - Loại';
@@ -29,7 +29,7 @@ function ProductTypes() {
     const [catesByBrand, setCatesByBrand] = useState([]); //Danh sách hiển thị table cate
     const [loadingBrand, setLoadingBrand] = useState(true); //show loading
     const [loadingCate, setLoadingCate] = useState(); //show loading
-
+    const { idMenu } = useParams();
     //#region --Brand--
     // Form Brand
     const [formBrand] = Form.useForm();
@@ -465,20 +465,20 @@ function ProductTypes() {
 
     useEffect(() => {
         axios.get(url + urnBrand).then((res) => {
-            setBrands(res.data);
+            setBrands(res.data.filter((x) => x.idMenu == idMenu));
             setLoadingBrand(false);
         });
         axios.get(url + urnCate).then((res) => {
             setCates(res.data);
         });
-    }, []);
-
+    }, [idMenu]);
+    console.log('brand', brands);
     return (
         <div className="wrap-content-admin">
             <Row>
                 <Col span={11}>
                     <div className="heading-product-type">
-                        <h1>Thương hiệu</h1>
+                        <h1>{idMenu == 1 ? 'Thương hiệu' : 'Loại phụ kiện'}</h1>
                     </div>
                     <div style={{ padding: '0 27px' }}>
                         <Input.Group compact>
@@ -526,7 +526,7 @@ function ProductTypes() {
                 </Col>
                 <Col span={13}>
                     <div className="heading-product-type">
-                        <h1>Loại sản phẩm</h1>
+                        <h1>{idMenu == 1 ? 'Loại sản phẩm' : 'Phụ kiện'}</h1>
                     </div>
 
                     {cate.idBrand >= 0 ? (

@@ -1,5 +1,7 @@
 {
     "key": "vi",
+    "English": "Tiếng Anh",
+    "Vietnamese": "Tiếng Việt",
     "HOME": "TRANG CHỦ",
     "about us": "GIỚI THIỆU",
     "how to buy": "HƯỚNG DẪN MUA HÀNG",
@@ -7,5 +9,17 @@
     "Search": {
         "1": "Tìm kiếm",
         "2": "Tìm"
-    }
+    },
+    "WRIST WATCHES": "Đồng hồ đeo tay",
+    "WATCHES ACCESSORIES": "Phụ kiện đồng hồ",
+    "POCKET WATCHES": "Đồng hồ bỏ túi",
+    "CLOCK": "Đồng hồ treo tường",
+
+    "Code": "Mã",
+    "Price per Unit (piece)": "Giá mỗi đơn vị (cái)",
+    "Contact Seller": "Liên hệ người bán",
+    "More Detail": "Xem chi tiết",
+    "Price": "Giá",
+
+    "Search result": "Kết quả tìm kiếm"
 }

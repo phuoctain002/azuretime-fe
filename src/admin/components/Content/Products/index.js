@@ -104,6 +104,7 @@ function Product() {
         axios.get(url + urnProsAdmin).then((res) => {
             setProductsAll(res.data);
             setProducts(res.data);
+            console.log('product', res.data);
             setLoading(false);
         });
         axios.get(url + urnBrand).then((res) => {

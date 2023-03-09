@@ -42,7 +42,19 @@ function CategoryContent() {
                                         <div className="card-wrap-category">
                                             <Link to={'/detail/' + item.idProduct}>
                                                 <div className="card-image">
-                                                    <img src={path + item.name} alt="" />
+                                                    <img
+                                                        className="card-image-img"
+                                                        src={path + item.name}
+                                                        alt="item.name"
+                                                    />
+                                                    <img
+                                                        className="card-image-border"
+                                                        src={url + '/images/FrameVintageWebOK-1.png'}
+                                                        alt=""
+                                                    />
+                                                    <div class="overlay">
+                                                        <div class="overlay-text">More Detail</div>
+                                                    </div>
                                                 </div>
                                             </Link>
                                             <div className="card-info-category">

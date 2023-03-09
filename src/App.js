@@ -1,6 +1,6 @@
 import './App.css';
 import './base.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Col, Row } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes, loginRoute } from './routes';
@@ -32,16 +32,9 @@ function App() {
                                 element={
                                     isLogin ? (
                                         <div className="app-admin">
-                                            {/* <HeaderAdmin /> */}
-                                            <Row>
-                                                <Col span={4}>
-                                                    <SidebarAdmin className="sidebar-admin" />
-                                                </Col>
-                                                <Col span={20}>
-                                                    {/* <ProductTypes /> */}
-                                                    <Page />
-                                                </Col>
-                                            </Row>
+                                            {/* <Sidebar Admin /> */}
+                                            <SidebarAdmin className="sidebar-admin" />
+                                            <Page />
                                         </div>
                                     ) : (
                                         <Navigate to={loginRoute.path} />
