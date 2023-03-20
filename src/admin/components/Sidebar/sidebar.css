@@ -27,7 +27,12 @@
 }
 
 .function-menu-btn {
+    height: 50px;
+    /* width: 100px; */
+    transition: ease 0.2s;
     display: inline-block;
+    cursor: pointer;
+    margin: 2px 0;
 }
 
 .menu-icon,

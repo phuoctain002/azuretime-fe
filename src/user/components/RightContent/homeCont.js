@@ -1,6 +1,7 @@
 // import Resizer from 'react-image-file-resizer';
-
+import { useState } from 'react';
 function DefaultContent() {
+    const [isA, setIsA] = useState(true);
     // ====TEST RESIZE IMAGE======
     // const [imgFull, setImgFull] = useState('');
     // const [imgx200, setImgx200] = useState('');

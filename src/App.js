@@ -32,7 +32,7 @@ function App() {
                                 element={
                                     isLogin ? (
                                         <div className="app-admin">
-                                            {/* <Sidebar Admin /> */}
+                                            {/* <HeaderAdmin /> */}
                                             <SidebarAdmin className="sidebar-admin" />
                                             <Page />
                                         </div>

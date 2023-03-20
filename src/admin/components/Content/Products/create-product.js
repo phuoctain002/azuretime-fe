@@ -30,10 +30,11 @@ import {
 } from '../../../../api/urn';
 import Resizer from 'react-image-file-resizer';
 import { BrowserRouter, Link, useParams } from 'react-router-dom';
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill, { Quill } from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 import { useTranslation } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
 function CreateProduct() {
     document.title = 'Admin - Thêm sản phẩm';
@@ -154,25 +155,25 @@ function CreateProduct() {
     //#endregion
     // const [visibleDiscount, setVisibleDiscount] = useState(false); //Nếu dùng discount thì mở ra
     useEffect(() => {
-        axios.get(url + urnBrand).then((res) => {
-            setBrands(res.data);
-        });
-        axios.get(url + urnCate).then((res) => {
-            setCates(res.data);
-            if (idBrand && idCategory) {
-                setSelectedBrand(Number(idBrand));
-                setCatesByBrand(res.data.filter((x) => x.idBrand === Number(idBrand)));
-                setSelectedCate(Number(idCategory));
-            }
-        });
-    }, []);
-    // text-editor
-    // Add fonts to whitelist
-    let Font = Quill.import('formats/font');
-    // We do not add Sans Serif since it is the default
-    Font.whitelist = ['monospace', 'serif', 'sans-serif'];
-    Quill.register(Font, true);
-    //product type
+        // axios.get(url + urnBrand).then((res) => {
+        //     setBrands(res.data);
+        // });
+        // axios.get(url + urnCate).then((res) => {
+        //     setCates(res.data);
+        //     if (idBrand && idCategory) {
+        //         setSelectedBrand(Number(idBrand));
+        //         setCatesByBrand(res.data.filter((x) => x.idBrand === Number(idBrand)));
+        //         setSelectedCate(Number(idCategory));
+        //     }
+        // });
+        if (product.descriptionVi.length > 0) {
+            console.log('render');
+        }
+        if (product.descriptionEn.length > 0) {
+            console.log('render');
+        }
+    }, [product.descriptionVi, product.descriptionEn]);
+
     const handleSelectBrand = (value) => {
         setProduct({ ...product, idBrand: value });
         let a = cates.filter((x) => x.idBrand === value);
@@ -207,11 +208,9 @@ function CreateProduct() {
             );
         });
     };
-    // Translate
-    const handleTranslate = () => {
-        // setLoading(true);
-        let countEn = refEn.current.unprivilegedEditor.getText().length;
-        let countVi = refVi.current.unprivilegedEditor.getText().length;
+    const handleCheckData = async () => {
+        let countEn = product.descriptionEn.length;
+        let countVi = product.descriptionVi.length;
         console.log('descriptionEn', countEn);
         console.log('descriptionVi', countVi);
         if ((countEn > 1 && countVi > 1) || (countEn <= 1 && countVi <= 1)) {
@@ -221,17 +220,86 @@ function CreateProduct() {
             });
             return;
         } else if (countEn <= 1 && countVi > 1) {
+            let text = product.descriptionVi;
+            const options = {
+                method: 'POST',
+                url: 'https://ai-translate.p.rapidapi.com/translate',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-RapidAPI-Key': '4ac5dc1462msh54b5291a85bb08dp13d741jsn956c8de38d96',
+                    'X-RapidAPI-Host': 'ai-translate.p.rapidapi.com',
+                },
+                data: { texts: [text], tl: 'en', sl: 'vi' },
+            };
+            await axios
+                .request(options)
+                .then(function (response) {
+                    setProduct({
+                        ...product,
+                        descriptionEn: response.data.texts,
+                    });
+                    notification.success({
+                        message: `Đã dịch xong`,
+                        duration: 4,
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        } else if (countEn > 1 && countVi <= 1) {
+            const text = product.descriptionEn;
+            const options = {
+                method: 'POST',
+                url: 'https://ai-translate.p.rapidapi.com/translate',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-RapidAPI-Key': '4ac5dc1462msh54b5291a85bb08dp13d741jsn956c8de38d96',
+                    'X-RapidAPI-Host': 'ai-translate.p.rapidapi.com',
+                },
+                data: { texts: [text], tl: 'vi', sl: 'en' },
+            };
+
+            await axios
+                .request(options)
+                .then(function (response) {
+                    setProduct({
+                        ...product,
+                        descriptionVi: response.data.texts,
+                    });
+                    notification.success({
+                        message: `Đã dịch xong`,
+                        duration: 4,
+                    });
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        }
+        console.log('product', product);
+    };
+    // Translate
+    const handleTranslate = () => {
+        // setLoading(true);
+        let countEn = product.descriptionEn.length;
+        let countVi = product.descriptionVi.length;
+        console.log('descriptionEn', countEn);
+        console.log('descriptionVi', countVi);
+        if ((countEn > 1 && countVi > 1) || (countEn <= 1 && countVi <= 1)) {
+            notification.warning({
+                message: `Không có nội dung cần dịch`,
+                duration: 4,
+            });
+            return false;
+        } else if (countEn <= 1 && countVi > 1) {
             handleTranslateToEn();
-            // setLoading(false);
-            // console.log('false');
+            return true;
         } else if (countEn > 1 && countVi <= 1) {
             handleTranslateToVi();
-            // setLoading(false);
-            // console.log('false');
+            return true;
         }
     };
-    const handleTranslateToVi = () => {
-        const text = product.descriptionEn.replaceAll('\n', ' a1b2c3d4 ');
+    const handleTranslateToVi = async () => {
+        const text = product.descriptionEn;
         const options = {
             method: 'POST',
             url: 'https://ai-translate.p.rapidapi.com/translate',
@@ -242,10 +310,14 @@ function CreateProduct() {
             },
             data: { texts: [text], tl: 'vi', sl: 'en' },
         };
-        axios
+
+        await axios
             .request(options)
             .then(function (response) {
-                setProduct({ ...product, descriptionVi: response.data.texts.replaceAll(' a1b2c3d4', '\n') });
+                setProduct({
+                    ...product,
+                    descriptionVi: response.data.texts,
+                });
                 notification.success({
                     message: `Đã dịch xong`,
                     duration: 4,
@@ -255,9 +327,8 @@ function CreateProduct() {
                 console.error(error);
             });
     };
-    const handleTranslateToEn = () => {
-        console.log('descriptionVi', product.descriptionVi);
-        const text = product.descriptionVi.replaceAll('\n', ' a1b2c3d4 ');
+    const handleTranslateToEn = async () => {
+        const text = product.descriptionVi;
         const options = {
             method: 'POST',
             url: 'https://ai-translate.p.rapidapi.com/translate',
@@ -268,10 +339,13 @@ function CreateProduct() {
             },
             data: { texts: [text], tl: 'en', sl: 'vi' },
         };
-        axios
+        await axios
             .request(options)
             .then(function (response) {
-                setProduct({ ...product, descriptionEn: response.data.texts.replaceAll(' a1b2c3d4', '\n') });
+                setProduct({
+                    ...product,
+                    descriptionEn: response.data.texts,
+                });
                 notification.success({
                     message: `Đã dịch xong`,
                     duration: 4,
@@ -402,6 +476,7 @@ function CreateProduct() {
     };
     // ===STEP===
     const next = () => {
+        // console.log('product', product);
         const isValid = isValidator();
         if (isValid) {
             console.log('product', product);
@@ -549,50 +624,28 @@ function CreateProduct() {
                     {/* DESCRIPTION EN */}
                     <Row className="row-info-prouct" style={{ marginTop: '-26px' }}>
                         <Col span={10}>
-                            {/* <CustomToolbar theme="snow" /> */}
-                            <ReactQuill
-                                className="editor"
-                                theme="snow"
-                                ref={refVi}
-                                value={product.descriptionVi}
-                                onChange={handleDescriptionVi}
-                                placeholder="-- Mô tả sản phẩm bằng tiếng Việt"
-                                modules={{
-                                    toolbar: [
-                                        ['bold', 'italic', 'underline'], // toggled buttons
-
-                                        [{ list: 'ordered' }, { list: 'bullet' }],
-                                        [{ align: [] }],
-
-                                        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-
-                                        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                                        [{ font: Font.whitelist }],
-                                    ],
+                            <CKEditor
+                                editor={Editor}
+                                data={product.descriptionEn}
+                                onReady={(editor) => {
+                                    // You can store the "editor" and use when it is needed.
+                                    console.log('Editor is ready to use!', editor);
+                                }}
+                                onChange={(event, editor) => {
+                                    handleDescriptionEn(editor.getData());
                                 }}
                             />
                         </Col>
                         <Col span={10}>
-                            {/* <CustomToolbar theme="snow" /> */}
-                            <ReactQuill
-                                className="editor"
-                                theme="snow"
-                                ref={refEn}
-                                value={product.descriptionEn}
-                                onChange={handleDescriptionEn}
-                                placeholder="-- Mô tả sản phẩm bằng tiếng Anh"
-                                modules={{
-                                    toolbar: [
-                                        ['bold', 'italic', 'underline'], // toggled buttons
-
-                                        [{ list: 'ordered' }, { list: 'bullet' }],
-                                        [{ align: [] }],
-
-                                        [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-
-                                        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                                        [{ font: Font.whitelist }],
-                                    ],
+                            <CKEditor
+                                editor={Editor}
+                                data={product.descriptionVi}
+                                onReady={(editor) => {
+                                    // You can store the "editor" and use when it is needed.
+                                    console.log('Editor is ready to use!', editor);
+                                }}
+                                onChange={(event, editor) => {
+                                    handleDescriptionVi(editor.getData());
                                 }}
                             />
                         </Col>
@@ -791,8 +844,13 @@ function CreateProduct() {
                         <Button type="primary" className="btnStep" onClick={handleTranslate}>
                             Translate
                         </Button>
-                        <Button type="primary" className="btnStep" onClick={() => next()}>
-                            Next
+                        {product.descriptionEn.length > 0 && product.descriptionVi.length > 0 && (
+                            <Button type="primary" className="btnStep" onClick={() => next()}>
+                                Next
+                            </Button>
+                        )}
+                        <Button type="primary" className="btnStep" onClick={handleCheckData}>
+                            Check
                         </Button>
                     </>
                 )}
